@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+import { getPlayerMatches } from './services/api';
+import type { PlayerData } from './types/data';
+
+import Table from './components/Table/Table';
+import Layout from './components/layout/Layout';
+
+const App = () => {
+  const [playerData, setPlayerData] = useState<PlayerData[]>([]);
+  const koreans = playerData.filter((data) => data?.country === 'South Korea');
+  const foreigners = playerData.filter(
+    (data) => data?.country !== 'South Korea'
   );
-}
+
+  console.log('APP RUNNING!');
+
+  useEffect(() => {
+    fetchPlayerData();
+  }, []);
+
+  const fetchPlayerData = async () => {
+    const data = await getPlayerMatches();
+    setPlayerData(data);
+  };
+
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/koreans" element={<Table playerData={koreans} />} />
+        <Route
+          path="/foreigners"
+          element={<Table playerData={foreigners} countryFilter />}
+        />
+      </Routes>
+    </Layout>
+  );
+};
 
 export default App;
