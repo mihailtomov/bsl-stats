@@ -1,41 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { getPlayerMatches } from './services/api';
-import type { PlayerData } from './types/data';
+import Layout from './pages/Layout';
+import Home from './pages/Home';
+import Tournaments from './pages/Tournaments';
+import TournamentStats from './pages/TournamentStats';
+import PlayerStats from './pages/PlayerStats';
 
-import Table from './components/Table/Table';
-import Layout from './components/layout/Layout';
+import './App.css';
 
-const App = () => {
-  const [playerData, setPlayerData] = useState<PlayerData[]>([]);
-  const koreans = playerData.filter((data) => data?.country === 'South Korea');
-  const foreigners = playerData.filter(
-    (data) => data?.country !== 'South Korea'
-  );
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    errorElement: <p>Something went wrong!</p>,
+    children: [
+      { index: true, element: <Home /> },
+      {
+        path: 'bsl',
+        element: <Tournaments />,
+        children: [
+          {
+            path: ':pageId',
+            element: <TournamentStats />,
+          },
+          {
+            path: ':pageId/:player',
+            element: <PlayerStats />,
+          },
+        ],
+      },
+    ],
+  },
+]);
 
-  console.log('APP RUNNING!');
-
-  useEffect(() => {
-    fetchPlayerData();
-  }, []);
-
-  const fetchPlayerData = async () => {
-    const data = await getPlayerMatches();
-    setPlayerData(data);
-  };
-
-  return (
-    <Layout>
-      <Routes>
-        <Route path="/koreans" element={<Table playerData={koreans} />} />
-        <Route
-          path="/foreigners"
-          element={<Table playerData={foreigners} countryFilter />}
-        />
-      </Routes>
-    </Layout>
-  );
-};
+const App = () => <RouterProvider router={router} />;
 
 export default App;

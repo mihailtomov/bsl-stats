@@ -1,25 +1,39 @@
-import { extractPlayerData } from '../utils/data';
+import { constructQueryParams } from '../utils/format';
 
 const apiUrl = 'https://liquipedia.net/starcraft/api.php?';
 const headers = {
   'User-Agent': `bw-stats app (local development;${process.env.REACT_APP_EMAIL})`,
   'Accept-Encoding': 'gzip',
 };
+const defaultSearchParams = constructQueryParams({
+  format: 'json',
+  maxage: 604800,
+  origin: '*',
+});
+const tournamentsListParams = constructQueryParams({
+  list: 'prefixsearch',
+  pssearch: 'Bombastic_StarLeague%2F',
+  pslimit: 200,
+});
+const tournamentsDataParams = constructQueryParams({
+  prop: 'revisions',
+  rvprop: 'content',
+  rvslots: '*',
+});
 
-export const getPlayerMatches = async () => {
-  const response = await fetch(
-    `${apiUrl}origin=*&maxage=604800&action=parse&format=json&page=Portal:Statistics/Player_matches`,
+export const getTournamentsList = () =>
+  fetch(
+    `${apiUrl}action=query&${defaultSearchParams}&${tournamentsListParams}`,
     { headers }
   );
 
-  const {
-    parse: {
-      text: { '*': htmlString },
-    },
-  } = await response.json();
-
-  return extractPlayerData(htmlString);
-};
+export const getTournamentsData = (pageIds: number[]) =>
+  fetch(
+    `${apiUrl}action=query&${defaultSearchParams}&${tournamentsDataParams}&pageids=${pageIds.join(
+      '%7C'
+    )}`,
+    { headers }
+  );
 
 export const getCountryCodes = async () => {
   const response = await fetch('https://flagcdn.com/en/codes.json');

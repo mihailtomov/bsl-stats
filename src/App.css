@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+}
+
+h2 {
+  margin: 1rem 0;
+}
+
+.hover-pointer:hover {
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+@media (min-width: 992px) {
+  .container-sm {
+    max-width: 720px;
+  }
+}
