@@ -1,33 +1,40 @@
 import React from 'react';
 import { NavLink, Outlet, ScrollRestoration } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 
 const Layout = () => {
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Container className="text-center">
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse
-            className="justify-content-center"
-            id="responsive-navbar-nav"
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="text-center container">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#app-navbar"
+            aria-controls="app-navbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
-            <Nav>
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div
+            className="justify-content-center navbar-collapse collapse"
+            id="app-navbar"
+          >
+            <div className="navbar-nav">
               <NavLink className="nav-link" to="/">
                 Home
               </NavLink>
               <NavLink className="nav-link" to="/bsl">
                 BSL Tournaments
               </NavLink>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      <Container className="text-center" fluid="sm">
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div className="text-center container-sm">
         <Outlet />
-      </Container>
+      </div>
       <ScrollRestoration />
     </>
   );

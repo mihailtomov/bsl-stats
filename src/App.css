@@ -10,10 +10,6 @@ h2 {
   cursor: pointer;
 }
 
-.bold {
-  font-weight: bold;
-}
-
 @media (min-width: 992px) {
   .container-sm {
     max-width: 720px;

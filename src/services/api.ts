@@ -2,7 +2,7 @@ import { constructQueryParams } from '../utils/format';
 
 const apiUrl = 'https://liquipedia.net/starcraft/api.php?';
 const headers = {
-  'User-Agent': `bw-stats app (local development;${process.env.REACT_APP_EMAIL})`,
+  'User-Agent': `bsl-stats app (local development;${process.env.REACT_APP_EMAIL})`,
   'Accept-Encoding': 'gzip',
 };
 const defaultSearchParams = constructQueryParams({

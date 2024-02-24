@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import Table from 'react-bootstrap/Table';
-
 import { StatsDataCollection } from '../types/data';
 import { extractData } from '../utils/data';
 import { TournamentsDataContext } from '../store/tournaments-data-context';
@@ -60,7 +58,7 @@ const TournamentStats = () => {
       <h2>{`BSL ${
         tournamentsList?.find((tour) => tour.pageId === Number(pageId))?.number
       } player statistics`}</h2>
-      <Table bordered hover responsive>
+      <table className="table table-bordered table-hover table-responsive">
         <thead className="table-dark">
           <tr>
             <th
@@ -103,7 +101,7 @@ const TournamentStats = () => {
             </tr>
           ))}
         </tbody>
-      </Table>
+      </table>
     </>
   );
 };

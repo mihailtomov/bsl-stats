@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import Table from 'react-bootstrap/Table';
 
 import {
   extractData,
@@ -56,7 +55,7 @@ const PlayerStats = () => {
       <h3 className="mt-3">{`BSL ${
         tournamentsList?.find((tour) => tour.pageId === Number(pageId))?.number
       } ${player}`}</h3>
-      <Table className="bordered responsive mb-5">
+      <table className="table table-bordered table-responsive mb-5">
         <thead>
           <tr>
             <th>
@@ -80,8 +79,8 @@ const PlayerStats = () => {
             <td>{playerStats?.vsZerg}</td>
           </tr>
         </tbody>
-      </Table>
-      <Table bordered hover responsive>
+      </table>
+      <table className="table table-bordered table-hover table-responsive">
         <thead className="table-dark">
           <tr>
             <th>Date</th>
@@ -95,7 +94,9 @@ const PlayerStats = () => {
             const isWinner = player === winner;
             const opponent = isWinner ? loser : winner;
             const result = isWinner ? 'Win' : 'Loss';
-            const resultClass = `text-${isWinner ? 'success' : 'danger'} bold`;
+            const resultClass = `text-${
+              isWinner ? 'success' : 'danger'
+            } fw-bold`;
             const date = datePlayed.trim();
 
             return (
@@ -108,7 +109,7 @@ const PlayerStats = () => {
             );
           })}
         </tbody>
-      </Table>
+      </table>
     </>
   );
 };

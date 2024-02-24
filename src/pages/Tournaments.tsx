@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
 
 import { TournamentsDataContext } from '../store/tournaments-data-context';
 
@@ -10,19 +9,18 @@ const Tournaments = () => {
   return (
     <>
       <h2>BSL Tournaments</h2>
-      <Nav className="justify-content-center">
+      <div className="justify-content-center nav">
         {tournamentsList?.map((tournament) => (
-          <Nav.Item key={tournament.number}>
+          <div className="nav-item" key={tournament.number}>
             <NavLink
-              style={({ isActive }) =>
-                isActive ? { fontWeight: 'bold' } : undefined
+              className={({ isActive }) =>
+                ['nav-link', isActive ? 'fw-bold' : ''].join(' ')
               }
-              className="nav-link"
               to={`${tournament.pageId}`}
             >{`BSL ${tournament.number}`}</NavLink>
-          </Nav.Item>
+          </div>
         ))}
-      </Nav>
+      </div>
       <Outlet />
     </>
   );
