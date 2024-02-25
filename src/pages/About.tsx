@@ -32,10 +32,10 @@ const About = () => {
         </a>
       </p>
       <p>
-        Second it's very important to give credit to Liquipedia's development
-        team for exposing and maintaining a free public API from where this data
-        can be accessed from. For Brood War there are two API's available and
-        the one i'm using for this project is{' '}
+        Last but not least it's very important to give credit to Liquipedia's
+        development team for exposing and maintaining a free public API from
+        where this data can be accessed from. For Brood War there are two API's
+        available and the one i'm using for this project is{' '}
         <a
           href="https://liquipedia.net/starcraft/api.php"
           target="_blank"
