@@ -28,6 +28,9 @@ const Layout = () => {
               <NavLink className="nav-link" to="/bsl">
                 BSL Tournaments
               </NavLink>
+              <NavLink className="nav-link" to="/about">
+                About
+              </NavLink>
             </div>
           </div>
         </div>
