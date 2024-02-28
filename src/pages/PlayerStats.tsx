@@ -52,7 +52,7 @@ const PlayerStats = () => {
 
   return (
     <>
-      <h3 className="mt-3">{`BSL ${
+      <h3 className="my-4">{`BSL ${
         tournamentsList?.find((tour) => tour.pageId === Number(pageId))?.number
       } ${player}`}</h3>
       <table className="table table-bordered table-responsive mb-5">
