@@ -12,15 +12,22 @@ import { extractTournamentsPageData } from '../utils/data';
 export const TournamentsDataContext = createContext<{
   tournamentsData?: TournamentsPages;
   tournamentsList?: TournamentsList[];
-}>({ tournamentsData: undefined, tournamentsList: undefined });
+  isLoading: boolean;
+}>({
+  tournamentsData: undefined,
+  tournamentsList: undefined,
+  isLoading: false,
+});
 
 const TournamentsDataProvider: React.FC<{ children: React.ReactNode }> = (
   props
 ) => {
   const [tournamentsList, setTournamentsList] = useState<TournamentsList[]>([]);
   const [tournamentsData, setTournamentsData] = useState<TournamentsPages>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     const tournamentsListResponse = await getTournamentsList();
     const tournamentsListResponseData: TournamentsListResponse =
       await tournamentsListResponse.json();
@@ -36,6 +43,7 @@ const TournamentsDataProvider: React.FC<{ children: React.ReactNode }> = (
       const tournamentsData: TournamentsData =
         await tournamentsDataResponse.json();
       setTournamentsData(tournamentsData.query);
+      setIsLoading(false);
     }, 2000);
   };
 
@@ -45,7 +53,7 @@ const TournamentsDataProvider: React.FC<{ children: React.ReactNode }> = (
 
   return (
     <TournamentsDataContext.Provider
-      value={{ tournamentsData, tournamentsList }}
+      value={{ tournamentsData, tournamentsList, isLoading }}
     >
       {props.children}
     </TournamentsDataContext.Provider>

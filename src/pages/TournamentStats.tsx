@@ -9,7 +9,7 @@ let filtered = false;
 
 const TournamentStats = () => {
   const navigate = useNavigate();
-  const { tournamentsData, tournamentsList } = useContext(
+  const { tournamentsData, tournamentsList, isLoading } = useContext(
     TournamentsDataContext
   );
   const [data, setData] = useState<StatsDataCollection>([]);
@@ -58,50 +58,66 @@ const TournamentStats = () => {
       <h2>{`BSL ${
         tournamentsList?.find((tour) => tour.pageId === Number(pageId))?.number
       } player statistics`}</h2>
-      <table className="table table-bordered table-hover table-responsive">
-        <thead className="table-dark">
-          <tr>
-            <th
-              className="hover-pointer"
-              onClick={sortTable}
-              data-field="nickname"
-            >
-              Player
-            </th>
-            <th className="hover-pointer" onClick={sortTable} data-field="race">
-              Race
-            </th>
-            <th className="hover-pointer" onClick={sortTable} data-field="won">
-              Wins
-            </th>
-            <th className="hover-pointer" onClick={sortTable} data-field="lost">
-              Losses
-            </th>
-            <th
-              className="hover-pointer"
-              onClick={sortTable}
-              data-field="winrate"
-            >
-              Winrate
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map(({ nickname, race, won, lost, winrate }) => (
-            <tr
-              className="hover-pointer"
-              key={nickname}
-              onClick={() => navigate(`/bsl/${pageId}/${nickname}`)}
-            >
-              <td>{nickname}</td>
-              <td>{race}</td>
-              <td>{won}</td>
-              <td>{lost}</td>
-              <td>{winrate}%</td>
+      {isLoading && <p>Data loading..</p>}
+      {data.length > 0 && (
+        <table className="table table-bordered table-hover table-responsive">
+          <thead className="table-dark">
+            <tr>
+              <th
+                className="hover-pointer"
+                onClick={sortTable}
+                data-field="nickname"
+              >
+                Player
+              </th>
+              <th
+                className="hover-pointer"
+                onClick={sortTable}
+                data-field="race"
+              >
+                Race
+              </th>
+              <th
+                className="hover-pointer"
+                onClick={sortTable}
+                data-field="won"
+              >
+                Wins
+              </th>
+              <th
+                className="hover-pointer"
+                onClick={sortTable}
+                data-field="lost"
+              >
+                Losses
+              </th>
+              <th
+                className="hover-pointer"
+                onClick={sortTable}
+                data-field="winrate"
+              >
+                Winrate
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map(({ nickname, race, won, lost, winrate }) => (
+              <tr
+                className="hover-pointer"
+                key={nickname}
+                onClick={() => navigate(`/bsl/${pageId}/${nickname}`)}
+              >
+                <td>{nickname}</td>
+                <td>{race}</td>
+                <td>{won}</td>
+                <td>{lost}</td>
+                <td>{winrate}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {!isLoading && data.length === 0 && <p>No match data available.</p>}
     </>
   );
 };

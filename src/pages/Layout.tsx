@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink, Outlet, ScrollRestoration } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
+import Link from '../components/Link';
 
 const Layout = () => {
   return (
@@ -35,10 +36,13 @@ const Layout = () => {
           </div>
         </div>
       </nav>
-      <div className="text-center container-sm">
+      <div className="text-center container-sm min-vh-100">
         <Outlet />
       </div>
-      <ScrollRestoration />
+      <div className="card-footer bg-dark w-100 bottom-0 text-center text-white py-3 mt-5">
+        Created by{' '}
+        <Link url="https://github.com/mihailtomov" text="Mihail Tomov" />
+      </div>
     </>
   );
 };
