@@ -15,8 +15,7 @@ export const config = {
       order: 'date DESC',
     },
   },
-  apiFetchOptions: {
+  apiHeaders: {
     headers: { Authorization: `Apikey ${process.env.API_KEY}` },
-    rejectUnauthorized: false,
   },
 };

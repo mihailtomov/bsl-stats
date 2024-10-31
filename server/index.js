@@ -1,12 +1,13 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import querystring from 'node:querystring';
+import https from 'node:https';
 
 import { config } from './config/config.js';
 import DataType from './enums/index.js';
 import middlewares from './middlewares/index.js';
 
-const { apiUrl, apiParams, apiFetchOptions } = config;
+const { apiUrl, apiParams, apiHeaders } = config;
 const { serverHeaders, redisClient, redisCache } = middlewares;
 
 const app = express();
@@ -20,7 +21,12 @@ app.get('/tournaments', redisCache, async (req, res) => {
       `${apiUrl}${DataType.Tournament}?${querystring.stringify(
         apiParams.tournament
       )}`,
-      apiFetchOptions
+      {
+        ...apiHeaders,
+        agent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
+      }
     );
 
     const data = await response.json();
@@ -41,7 +47,12 @@ app.get('/matchlist/:pageid', redisCache, async (req, res) => {
         ...apiParams.match,
         conditions: `[[pageid::${req.params.pageid}]]`,
       })}`,
-      apiFetchOptions
+      {
+        ...apiHeaders,
+        agent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
+      }
     );
 
     const data = await response.json();
