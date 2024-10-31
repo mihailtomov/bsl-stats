@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev:server": "nodemon --env-file=.env index.js",
-    "prod:server": "NODE_ENV=production index.js"
+    "prod:server": "SET NODE_ENV=production & node index.js"
   },
   "keywords": [],
   "author": "Mihail Tomov",
