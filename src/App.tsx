@@ -22,11 +22,11 @@ const router = createBrowserRouter([
         element: <Tournaments />,
         children: [
           {
-            path: ':pageId',
+            path: ':tournamentNumber',
             element: <TournamentStats />,
           },
           {
-            path: ':pageId/:player',
+            path: ':tournamentNumber/:player',
             element: <PlayerStats />,
           },
         ],

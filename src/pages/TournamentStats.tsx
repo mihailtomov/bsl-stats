@@ -1,24 +1,33 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { StatsDataCollection } from '../types/data';
-import { extractData } from '../utils/data';
-import { TournamentsDataContext } from '../store/tournaments-data-context';
+import { DataContext } from '../store/data-context';
+import useTournamentStatisticsData from '../hooks/useTournamentStatisticsData';
+
+import PlayerInfo from '../components/PlayerInfo';
+import ResponsiveTable from '../components/ResponsiveTable';
 
 let filtered = false;
 
+const TABLE_HEADINGS_CONFIG = [
+  { fieldLabel: 'nickname', textLabel: 'Player' },
+  { fieldLabel: 'race', textLabel: 'Race' },
+  { fieldLabel: 'gamesWon', textLabel: 'Wins' },
+  { fieldLabel: 'gamesLost', textLabel: 'Losses' },
+  { fieldLabel: 'winrate', textLabel: 'Winrate' },
+];
+
 const TournamentStats = () => {
   const navigate = useNavigate();
-  const { tournamentsData, tournamentsList, isLoading } = useContext(
-    TournamentsDataContext
-  );
-  const [data, setData] = useState<StatsDataCollection>([]);
-  const { pageId } = useParams();
+  const { tournamentsList } = useContext(DataContext);
+  const { tournamentNumber } = useParams();
+  const { tournamentStatisticsData, setTournamentStatisticsData, dataLoading } =
+    useTournamentStatisticsData();
 
   const sortTable = (e: React.BaseSyntheticEvent) => {
     const sortByValue: string = e.target.dataset.field;
 
-    setData((prevData) =>
+    setTournamentStatisticsData((prevData) =>
       [...prevData].sort((a, b) => {
         const curr = (a as any)[sortByValue];
         const next = (b as any)[sortByValue];
@@ -42,82 +51,58 @@ const TournamentStats = () => {
     filtered = !filtered;
   };
 
-  useEffect(() => {
-    if (pageId) {
-      const dataString =
-        tournamentsData?.pages[pageId].revisions[0].slots.main['*'];
-      if (dataString) {
-        const { statistics } = extractData(dataString);
-        setData(statistics.sort((a, b) => b.winrate - a.winrate));
-      }
-    }
-  }, [pageId, tournamentsData]);
-
   return (
     <>
       <h2>{`BSL ${
-        tournamentsList?.find((tour) => tour.pageId === Number(pageId))?.number
+        tournamentsList?.find(
+          (tour) => tour.number === Number(tournamentNumber)
+        )?.number
       } player statistics`}</h2>
-      {isLoading && <p>Data loading..</p>}
-      {data.length > 0 && (
-        <table className="table table-bordered table-hover table-responsive">
+      {dataLoading && <p>Data loading..</p>}
+      {tournamentStatisticsData.length > 0 && (
+        <ResponsiveTable>
           <thead className="table-dark">
             <tr>
-              <th
-                className="hover-pointer"
-                onClick={sortTable}
-                data-field="nickname"
-              >
-                Player
-              </th>
-              <th
-                className="hover-pointer"
-                onClick={sortTable}
-                data-field="race"
-              >
-                Race
-              </th>
-              <th
-                className="hover-pointer"
-                onClick={sortTable}
-                data-field="won"
-              >
-                Wins
-              </th>
-              <th
-                className="hover-pointer"
-                onClick={sortTable}
-                data-field="lost"
-              >
-                Losses
-              </th>
-              <th
-                className="hover-pointer"
-                onClick={sortTable}
-                data-field="winrate"
-              >
-                Winrate
-              </th>
+              {TABLE_HEADINGS_CONFIG.map(({ fieldLabel, textLabel }) => (
+                <th
+                  key={fieldLabel}
+                  className="hover-pointer"
+                  onClick={sortTable}
+                  data-field={fieldLabel}
+                >
+                  {textLabel}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {data.map(({ nickname, race, won, lost, winrate }) => (
-              <tr
-                className="hover-pointer"
-                key={nickname}
-                onClick={() => navigate(`/bsl/${pageId}/${nickname}`)}
-              >
-                <td>{nickname}</td>
-                <td>{race}</td>
-                <td>{won}</td>
-                <td>{lost}</td>
-                <td>{winrate}%</td>
-              </tr>
-            ))}
+            {tournamentStatisticsData.map(
+              ({ nickname, race, flag, gamesWon, gamesLost, winrate }) => (
+                <tr
+                  className="hover-pointer"
+                  key={nickname}
+                  onClick={() =>
+                    navigate(`/bsl/${tournamentNumber}/${nickname}`, {
+                      state: tournamentStatisticsData,
+                    })
+                  }
+                >
+                  <td>
+                    <PlayerInfo {...{ nickname, flag }} />
+                  </td>
+                  <td>{race}</td>
+                  <td>{gamesWon}</td>
+                  <td>{gamesLost}</td>
+                  <td>{winrate}%</td>
+                </tr>
+              )
+            )}
           </tbody>
-        </table>
+        </ResponsiveTable>
       )}
-      {!isLoading && data.length === 0 && <p>No match data available.</p>}
+      {tournamentStatisticsData.length === 0 && !dataLoading && (
+        <p>No match data available.</p>
+      )}
     </>
   );
 };

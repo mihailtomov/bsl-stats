@@ -1,0 +1,22 @@
+{
+  "name": "bsl-stats-server",
+  "version": "1.0.0",
+  "description": "Express server that communicates directly with the LPDB api to get data from the BSL proleague series.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev:server": "nodemon --env-file=.env index.js",
+    "prod:server": "NODE_ENV=production --env-file=.env index.js"
+  },
+  "keywords": [],
+  "author": "Mihail Tomov",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "node-fetch": "^2.7.0",
+    "redis": "^4.6.15"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

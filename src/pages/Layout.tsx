@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+
 import Link from '../components/Link';
+import ScrollToTop from '../components/ScrollToTop';
 
 const Layout = () => {
   return (
@@ -36,10 +38,11 @@ const Layout = () => {
           </div>
         </div>
       </nav>
-      <div className="text-center container-sm min-vh-100">
+      <div className="d-flex justify-content-center flex-column text-center container-sm container-height py-4">
+        <ScrollToTop />
         <Outlet />
       </div>
-      <div className="card-footer bg-dark w-100 bottom-0 text-center text-white py-3 mt-5">
+      <div className="card-footer bg-dark w-100 bottom-0 text-center text-white py-3">
         Created by{' '}
         <Link url="https://github.com/mihailtomov" text="Mihail Tomov" />
       </div>

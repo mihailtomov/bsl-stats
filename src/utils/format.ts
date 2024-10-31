@@ -4,9 +4,3 @@ export const getFormattedDate = (date: string) =>
     month: 'long',
     year: 'numeric',
   });
-
-export const constructQueryParams = (source: object) => {
-  return Object.entries(source)
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&');
-};

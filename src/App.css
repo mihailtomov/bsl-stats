@@ -10,6 +10,14 @@ h2 {
   cursor: pointer;
 }
 
+.hover-underline:hover {
+  text-decoration: underline;
+}
+
+.container-height {
+  min-height: 80vh;
+}
+
 @media (min-width: 992px) {
   .container-sm {
     max-width: 720px;

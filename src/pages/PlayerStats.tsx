@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import classNames from 'clsx';
 
-import {
-  extractData,
-  getIndividualPlayerStats,
-  getPlayerRace,
-} from '../utils/data';
+import { getIndividualPlayerStats, getPlayerMatchupData } from '../utils/data';
 import { getFormattedDate } from '../utils/format';
-import type { ResultsDataCollection, IndividualStats } from '../types/data';
-import { TournamentsDataContext } from '../store/tournaments-data-context';
+import { DataContext } from '../store/data-context';
+import useTournamentStatisticsData from '../hooks/useTournamentStatisticsData';
+
+import PlayerInfo from '../components/PlayerInfo';
+import ResponsiveTable from '../components/ResponsiveTable';
 
 import protossSrc from '../assets/protoss.png';
 import terranSrc from '../assets/terran.png';
@@ -16,104 +16,146 @@ import zergSrc from '../assets/zerg.png';
 import randomSrc from '../assets/random.png';
 
 const raceSrc: Record<string, string> = {
-  Protoss: protossSrc,
-  Terran: terranSrc,
-  Zerg: zergSrc,
-  Random: randomSrc,
+  P: protossSrc,
+  T: terranSrc,
+  Z: zergSrc,
+  R: randomSrc,
+};
+
+const renderMatchupWinrate = (matchupResult: string) => {
+  const [wonStr, lostStr] = matchupResult.split(' - ');
+  const won = Number(wonStr);
+  const lost = Number(lostStr);
+  let matchupWinrate = '(';
+
+  if (won || lost) {
+    matchupWinrate += `${(
+      (Number(won) / (Number(won) + Number(lost))) *
+      100
+    ).toFixed(2)}`;
+  } else {
+    matchupWinrate += (0).toFixed(2);
+  }
+
+  matchupWinrate += '%)';
+
+  return matchupWinrate;
 };
 
 const PlayerStats = () => {
-  const [playerMatchResults, setPlayerMatchResults] =
-    useState<ResultsDataCollection>([]);
-  const [playerStats, setPlayerStats] = useState<IndividualStats>();
-  const { tournamentsData, tournamentsList } = useContext(
-    TournamentsDataContext
-  );
-  const { pageId, player } = useParams();
-  const playerRace = getPlayerRace(player as string);
+  const { tournamentStatisticsData, dataLoading } =
+    useTournamentStatisticsData();
+  const { tournamentsList } = useContext(DataContext);
+  const { tournamentNumber, player } = useParams();
 
-  useEffect(() => {
-    if (pageId) {
-      const dataString =
-        tournamentsData?.pages[pageId].revisions[0].slots.main['*'];
-      if (dataString) {
-        const { results } = extractData(dataString);
-        const playerMatchResults = results.filter(
-          (result) =>
-            result.firstPlayer === player || result.secondPlayer === player
-        );
-        const playerStats = getIndividualPlayerStats(
-          player as string,
-          playerMatchResults
-        );
-        setPlayerMatchResults(playerMatchResults);
-        setPlayerStats(playerStats);
-      }
-    }
-  }, []);
+  if (tournamentStatisticsData.length === 0) {
+    return null;
+  }
+
+  const { race, matches } = getIndividualPlayerStats(
+    player as string,
+    tournamentStatisticsData
+  );
+  const { vsProtoss, vsTerran, vsZerg, vsRandom } = getPlayerMatchupData(
+    player as string,
+    matches
+  );
 
   return (
     <>
       <h3 className="my-4">{`BSL ${
-        tournamentsList?.find((tour) => tour.pageId === Number(pageId))?.number
-      } ${player}`}</h3>
-      <table className="table table-bordered table-responsive mb-5">
+        tournamentsList.find((tour) => tour.number === Number(tournamentNumber))
+          ?.number
+      } ${player} (${race})`}</h3>
+      <ResponsiveTable tableClassName="mb-5" hover={false}>
         <thead>
           <tr>
             <th>
-              <img src={raceSrc[playerRace]} alt="Player's race icon" /> v{' '}
-              <img src={raceSrc['Protoss']} alt="Protoss icon" />
+              <img src={raceSrc[race]} alt="Player's race icon" /> v{' '}
+              <img src={raceSrc['P']} alt="Protoss icon" />
             </th>
             <th>
-              <img src={raceSrc[playerRace]} alt="Player's race icon" /> v{' '}
-              <img src={raceSrc['Terran']} alt="Terran icon" />
+              <img src={raceSrc[race]} alt="Player's race icon" /> v{' '}
+              <img src={raceSrc['T']} alt="Terran icon" />
             </th>
             <th>
-              <img src={raceSrc[playerRace]} alt="Player's race icon" /> v{' '}
-              <img src={raceSrc['Zerg']} alt="Zerg icon" />
+              <img src={raceSrc[race]} alt="Player's race icon" /> v{' '}
+              <img src={raceSrc['Z']} alt="Zerg icon" />
+            </th>
+            <th>
+              <img src={raceSrc[race]} alt="Player's race icon" /> v{' '}
+              <img src={raceSrc['R']} alt="Random icon" />
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>{playerStats?.vsProtoss}</td>
-            <td>{playerStats?.vsTerran}</td>
-            <td>{playerStats?.vsZerg}</td>
+            <td>
+              {vsProtoss} {renderMatchupWinrate(vsProtoss)}
+            </td>
+            <td>
+              {vsTerran} {renderMatchupWinrate(vsTerran)}
+            </td>
+            <td>
+              {vsZerg} {renderMatchupWinrate(vsZerg)}
+            </td>
+            <td>
+              {vsRandom} {renderMatchupWinrate(vsRandom)}
+            </td>
           </tr>
         </tbody>
-      </table>
-      <table className="table table-bordered table-hover table-responsive">
+      </ResponsiveTable>
+      <ResponsiveTable>
         <thead className="table-dark">
           <tr>
-            <th>Date</th>
-            <th>Map</th>
-            <th>Opponent</th>
             <th>Result</th>
+            <th>Opponent</th>
+            <th>Race</th>
+            <th>Date</th>
+            <th>Stage</th>
+            <th>Map</th>
           </tr>
         </thead>
         <tbody>
-          {playerMatchResults
-            .sort((a, b) => +new Date(b.datePlayed) - +new Date(a.datePlayed))
-            .map(({ id, winner, loser, map, datePlayed }) => {
-              const isWinner = player === winner;
-              const opponent = isWinner ? loser : winner;
-              const result = isWinner ? 'Win' : 'Loss';
-              const resultClass = `text-${
-                isWinner ? 'success' : 'danger'
-              } fw-bold`;
-              const date = datePlayed.trim();
-
-              return (
-                <tr key={id}>
-                  <td>{date !== 'Unknown' ? getFormattedDate(date) : date}</td>
-                  <td>{map}</td>
-                  <td>{opponent}</td>
-                  <td className={resultClass}>{result}</td>
-                </tr>
+          {matches.map(({ id, winner, loser, stage, map, datePlayed }) => {
+            const isWinner = player === winner;
+            const opponentNickname = isWinner ? loser : winner;
+            const { flag: opponentFlag, race: opponentRace } =
+              getIndividualPlayerStats(
+                opponentNickname,
+                tournamentStatisticsData
               );
-            })}
+            const result = isWinner ? 'Win' : 'Loss';
+
+            return (
+              <tr key={id}>
+                <td
+                  className={classNames('fw-bold', {
+                    'text-success': isWinner,
+                    'text-danger': !isWinner,
+                  })}
+                >
+                  {result}
+                </td>
+                <td>
+                  <PlayerInfo
+                    nickname={opponentNickname}
+                    flag={opponentFlag}
+                    shouldNavigate
+                    tournamentStatisticsData={tournamentStatisticsData}
+                  />
+                </td>
+                <td>
+                  <img src={raceSrc[opponentRace]} alt="Opponent race icon" />
+                </td>
+                <td>{getFormattedDate(datePlayed)}</td>
+                <td>{stage}</td>
+                <td>{map ? map : 'N/A'}</td>
+              </tr>
+            );
+          })}
         </tbody>
-      </table>
+      </ResponsiveTable>
     </>
   );
 };
