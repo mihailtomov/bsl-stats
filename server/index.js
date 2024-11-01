@@ -31,6 +31,11 @@ app.get('/tournaments', redisCache, async (req, res) => {
 
     console.log(response);
 
+    if (response.status === 429) {
+      const responseText = await response.text();
+      res.send(responseText);
+    }
+
     const data = await response.json();
 
     await redisClient.set(req.originalUrl, JSON.stringify(data), { EX: 3600 });
