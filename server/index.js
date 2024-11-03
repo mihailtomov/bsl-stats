@@ -19,9 +19,11 @@ app.use(serverHeaders);
 // home endpoint that is hit by a cron job to prevent web service from sleeping on render.com
 app.get('/', (req, res) => {
   console.log(
-    'Successful self-ping. Self-pinging every 14th minute to prevent service from sleeping.'
+    'Successful self-ping. Self-pinging the home endpoint every 14th minute to prevent service from sleeping.'
   );
-  res.status(200).end();
+  res
+    .status(200)
+    .send('<h2>Successful hit of the home endpoint. Welcome!</h2>');
 });
 
 app.get('/tournaments', redisCache, async (req, res) => {
