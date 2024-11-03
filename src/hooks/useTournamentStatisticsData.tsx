@@ -37,7 +37,7 @@ const useTournamentStatisticsData = () => {
   };
 
   useEffect(() => {
-    if (tournamentsList.length > 0 && tournamentStatisticsData.length === 0) {
+    if (tournamentsList.length > 0) {
       setTournamentStatisticsData([]);
       fetchData();
     }
