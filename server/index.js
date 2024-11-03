@@ -15,17 +15,6 @@ const port = process.env.PORT || 5002;
 
 app.use(serverHeaders);
 
-app.get('/unblock-ratelimit', async (req, res) => {
-  try {
-    const response = await fetch('https://liquipedia.net/');
-    const responseText = await response.text();
-    res.send(responseText);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Unexpected error occurred on the server.' });
-  }
-});
-
 app.get('/tournaments', redisCache, async (req, res) => {
   try {
     const response = await fetch(
