@@ -12,7 +12,7 @@ const serverHeaders = (req, res, next) => {
   res.set({
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET',
-    // 'Cache-Control': 'max-age=604800',
+    'Cache-Control': 'max-age=604800',
   });
 
   next();

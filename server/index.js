@@ -4,6 +4,7 @@ import querystring from 'node:querystring';
 import https from 'node:https';
 
 import { config } from './config/config.js';
+import { initializeCronJob } from './utils/cron-job.js';
 import DataType from './enums/index.js';
 import middlewares from './middlewares/index.js';
 
@@ -14,6 +15,14 @@ const app = express();
 const port = process.env.PORT || 5002;
 
 app.use(serverHeaders);
+
+// home endpoint that is hit by a cron job to prevent web service from sleeping on render.com
+app.get('/', (req, res) => {
+  console.log(
+    'Successful self-ping. Self-pinging every 14th minute to prevent service from sleeping.'
+  );
+  res.status(200).end();
+});
 
 app.get('/tournaments', redisCache, async (req, res) => {
   try {
@@ -29,8 +38,7 @@ app.get('/tournaments', redisCache, async (req, res) => {
       }
     );
 
-    console.log(response);
-
+    // proper response handling in case service gets rate limited
     if (response.status === 429) {
       const responseText = await response.text();
       res.send(responseText);
@@ -72,5 +80,7 @@ app.get('/matchlist/:pageid', redisCache, async (req, res) => {
     res.status(500).json({ error: 'Unexpected error occurred on the server.' });
   }
 });
+
+initializeCronJob();
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));
