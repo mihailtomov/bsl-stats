@@ -4,8 +4,8 @@ import querystring from 'node:querystring';
 import https from 'node:https';
 
 import { config } from './config/config.js';
-import { initializeCronJob } from './utils/cron-job.js';
-import DataType from './enums/index.js';
+import { initializeCronJob } from './services/cron-job.js';
+import { DataType, CacheSeconds } from './enums/index.js';
 import middlewares from './middlewares/index.js';
 
 const { apiUrl, apiParams, apiHeaders } = config;
@@ -48,7 +48,9 @@ app.get('/tournaments', redisCache, async (req, res) => {
 
     const data = await response.json();
 
-    await redisClient.set(req.originalUrl, JSON.stringify(data), { EX: 3600 });
+    await redisClient.set(req.originalUrl, JSON.stringify(data), {
+      EX: CacheSeconds.OneDay,
+    });
 
     res.status(200).set({ 'Response-Source': 'api' }).json(data);
   } catch (error) {
@@ -74,7 +76,9 @@ app.get('/matchlist/:pageid', redisCache, async (req, res) => {
 
     const data = await response.json();
 
-    await redisClient.set(req.originalUrl, JSON.stringify(data), { EX: 3600 });
+    await redisClient.set(req.originalUrl, JSON.stringify(data), {
+      EX: CacheSeconds.OneDay,
+    });
 
     res.status(200).set({ 'Response-Source': 'api' }).json(data);
   } catch (error) {

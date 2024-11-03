@@ -3,4 +3,8 @@ const DataType = {
   Match: '/v3/match',
 };
 
-export default DataType;
+const CacheSeconds = {
+  OneDay: 86400,
+};
+
+export { DataType, CacheSeconds };

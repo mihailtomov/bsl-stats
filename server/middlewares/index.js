@@ -1,18 +1,13 @@
-import { createClient } from 'redis';
+import { initializeRedisClient } from '../services/redis.js';
+import { CacheSeconds } from '../enums/index.js';
 
-const client = createClient({
-  url: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
-});
-
-client.on('error', (err) => console.log('Redis Client Error', err));
-
-await client.connect();
+const client = await initializeRedisClient();
 
 const serverHeaders = (req, res, next) => {
   res.set({
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET',
-    'Cache-Control': 'max-age=604800',
+    'Cache-Control': `max-age=${CacheSeconds.OneDay}`,
   });
 
   next();
