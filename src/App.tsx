@@ -35,6 +35,15 @@ const router = createBrowserRouter([
         path: 'about',
         element: <About />,
       },
+      {
+        path: '*',
+        element: (
+          <p>
+            Looks like there is nothing here. Try one of the links from the menu
+            above.
+          </p>
+        ),
+      },
     ],
   },
 ]);

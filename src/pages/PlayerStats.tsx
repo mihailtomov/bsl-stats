@@ -52,12 +52,30 @@ const PlayerStats = () => {
     return null;
   }
 
+  if (
+    !tournamentStatisticsData.some(
+      (tourData) => tourData.nickname.toLowerCase() === player?.toLowerCase()
+    )
+  ) {
+    return (
+      <p className="mt-4">
+        Player with nickname <b>{player}</b> did not participate in BSL{' '}
+        {tournamentNumber}. Click on a tournament number above to view the list
+        with participating players.
+      </p>
+    );
+  }
+
+  const playerNickname = tournamentStatisticsData.find(
+    (tourData) => tourData.nickname.toLowerCase() === player?.toLowerCase()
+  )?.nickname;
+
   const { race, matches } = getIndividualPlayerStats(
-    player as string,
+    playerNickname as string,
     tournamentStatisticsData
   );
   const { vsProtoss, vsTerran, vsZerg, vsRandom } = getPlayerMatchupData(
-    player as string,
+    playerNickname as string,
     matches
   );
 
@@ -66,7 +84,7 @@ const PlayerStats = () => {
       <h3 className="my-4">{`BSL ${
         tournamentsList.find((tour) => tour.number === Number(tournamentNumber))
           ?.number
-      } ${player} (${race})`}</h3>
+      } ${playerNickname} (${race})`}</h3>
       <ResponsiveTable tableClassName="mb-5" hover={false}>
         <thead>
           <tr>
@@ -118,7 +136,7 @@ const PlayerStats = () => {
         </thead>
         <tbody>
           {matches.map(({ id, winner, loser, stage, map, datePlayed }) => {
-            const isWinner = player === winner;
+            const isWinner = playerNickname === winner;
             const opponentNickname = isWinner ? loser : winner;
             const { flag: opponentFlag, race: opponentRace } =
               getIndividualPlayerStats(

@@ -13,9 +13,12 @@ import {
 import { DataContext } from '../store/data-context';
 
 const useTournamentStatisticsData = () => {
+  const storedTournamentStatisticsData = useLocation().state as
+    | TournamentStatistics[]
+    | null;
   const [tournamentStatisticsData, setTournamentStatisticsData] = useState<
     TournamentStatistics[]
-  >(useLocation().state || []);
+  >(storedTournamentStatisticsData || []);
   const [dataLoading, setDataLoading] = useState<boolean>(false);
   const { tournamentsList } = useContext(DataContext);
   const { tournamentNumber } = useParams();
@@ -37,7 +40,13 @@ const useTournamentStatisticsData = () => {
   };
 
   useEffect(() => {
-    if (tournamentsList.length > 0) {
+    if (
+      tournamentsList.length > 0 &&
+      tournamentsList.some(
+        (tour) => tour.number === Number(tournamentNumber)
+      ) &&
+      !storedTournamentStatisticsData
+    ) {
       setTournamentStatisticsData([]);
       fetchData();
     }

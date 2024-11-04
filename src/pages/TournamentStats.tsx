@@ -51,13 +51,24 @@ const TournamentStats = () => {
     filtered = !filtered;
   };
 
+  if (
+    !tournamentsList.some((tour) => tour.number === Number(tournamentNumber))
+  ) {
+    return (
+      <p className="mt-4">
+        Tournament number doesn't exist yet. Try a different one from the links
+        above.
+      </p>
+    );
+  }
+
   return (
     <>
       <h2>{`BSL ${
         tournamentsList?.find(
           (tour) => tour.number === Number(tournamentNumber)
         )?.number
-      } player statistics`}</h2>
+      } statistics`}</h2>
       {dataLoading && <p>Data loading..</p>}
       {tournamentStatisticsData.length > 0 && (
         <ResponsiveTable>
