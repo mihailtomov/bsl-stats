@@ -11,8 +11,8 @@ const Home = () => {
   return (
     <>
       <NavLink className="text-primary text-decoration-none fs-5" to="bsl">
-        Check all available results from the BSL tournament series as entered in
-        Liquipedia.
+        Click to view results from the BSL ProLeague tournament series as
+        entered in Liquipedia.
       </NavLink>
     </>
   );

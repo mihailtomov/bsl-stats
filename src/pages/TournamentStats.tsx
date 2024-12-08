@@ -64,14 +64,9 @@ const TournamentStats = () => {
 
   return (
     <>
-      <h2>{`BSL ${
-        tournamentsList?.find(
-          (tour) => tour.number === Number(tournamentNumber)
-        )?.number
-      } statistics`}</h2>
       {dataLoading && <p>Data loading..</p>}
       {tournamentStatisticsData.length > 0 && (
-        <ResponsiveTable>
+        <ResponsiveTable containerClassName="text-start mt-3">
           <thead className="table-dark">
             <tr>
               {TABLE_HEADINGS_CONFIG.map(({ fieldLabel, textLabel }) => (

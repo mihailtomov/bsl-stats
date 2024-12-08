@@ -16,7 +16,7 @@ interface RawMatchData {
   date: string;
   winner: string;
   match2bracketdata: { sectionheader: string; inheritedheader?: string };
-  match2opponents: { score: number; match2players: RawPlayerData[] }[];
+  match2opponents: { match2players: RawPlayerData[] }[];
   match2games: RawGameData[];
 }
 
@@ -56,7 +56,6 @@ interface PlayerData {
   name: string;
   flag: string;
   race: string;
-  score: number;
 }
 
 export interface TournamentStatistics {

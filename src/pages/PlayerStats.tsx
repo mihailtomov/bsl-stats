@@ -43,8 +43,7 @@ const renderMatchupWinrate = (matchupResult: string) => {
 };
 
 const PlayerStats = () => {
-  const { tournamentStatisticsData, dataLoading } =
-    useTournamentStatisticsData();
+  const { tournamentStatisticsData } = useTournamentStatisticsData();
   const { tournamentsList } = useContext(DataContext);
   const { tournamentNumber, player } = useParams();
 
@@ -70,10 +69,11 @@ const PlayerStats = () => {
     (tourData) => tourData.nickname.toLowerCase() === player?.toLowerCase()
   )?.nickname;
 
-  const { race, matches } = getIndividualPlayerStats(
-    playerNickname as string,
-    tournamentStatisticsData
-  );
+  const { race, matches, gamesWon, gamesLost, winrate } =
+    getIndividualPlayerStats(
+      playerNickname as string,
+      tournamentStatisticsData
+    );
   const { vsProtoss, vsTerran, vsZerg, vsRandom } = getPlayerMatchupData(
     playerNickname as string,
     matches
@@ -85,6 +85,7 @@ const PlayerStats = () => {
         tournamentsList.find((tour) => tour.number === Number(tournamentNumber))
           ?.number
       } ${playerNickname} (${race})`}</h3>
+      <div className="mb-4 fw-bold">{`${gamesWon} - ${gamesLost} (${winrate}%)`}</div>
       <ResponsiveTable tableClassName="mb-5" hover={false}>
         <thead>
           <tr>
@@ -123,15 +124,15 @@ const PlayerStats = () => {
           </tr>
         </tbody>
       </ResponsiveTable>
-      <ResponsiveTable>
+      <ResponsiveTable containerClassName="text-start">
         <thead className="table-dark">
           <tr>
-            <th>Result</th>
+            <th>Stage</th>
             <th>Opponent</th>
             <th>Race</th>
-            <th>Date</th>
-            <th>Stage</th>
+            <th>Result</th>
             <th>Map</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
@@ -146,15 +147,8 @@ const PlayerStats = () => {
             const result = isWinner ? 'Win' : 'Loss';
 
             return (
-              <tr key={id}>
-                <td
-                  className={classNames('fw-bold', {
-                    'text-success': isWinner,
-                    'text-danger': !isWinner,
-                  })}
-                >
-                  {result}
-                </td>
+              <tr key={id} className="text-nowrap">
+                <td>{stage}</td>
                 <td>
                   <PlayerInfo
                     nickname={opponentNickname}
@@ -166,9 +160,16 @@ const PlayerStats = () => {
                 <td>
                   <img src={raceSrc[opponentRace]} alt="Opponent race icon" />
                 </td>
-                <td>{getFormattedDate(datePlayed)}</td>
-                <td>{stage}</td>
+                <td
+                  className={classNames('fw-bold', {
+                    'text-success': isWinner,
+                    'text-danger': !isWinner,
+                  })}
+                >
+                  {result}
+                </td>
                 <td>{map ? map : 'N/A'}</td>
+                <td>{getFormattedDate(datePlayed)}</td>
               </tr>
             );
           })}

@@ -31,10 +31,9 @@ const PlayerInfo: React.FC<Props> = ({
 
   return (
     <div
-      className={classNames(
-        'd-flex justify-content-center align-items-baseline gap-1 hover-pointer',
-        { 'hover-underline': shouldNavigate }
-      )}
+      className={classNames('d-flex align-items-baseline gap-1 hover-pointer', {
+        'hover-underline': shouldNavigate,
+      })}
       onClick={shouldNavigate ? navigateToPlayerStats : noop}
     >
       <img

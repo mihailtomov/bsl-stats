@@ -18,8 +18,8 @@ h2 {
   min-height: 80vh;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .container-sm {
-    max-width: 720px;
+    max-width: 680px;
   }
 }

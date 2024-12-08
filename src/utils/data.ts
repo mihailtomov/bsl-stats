@@ -99,17 +99,14 @@ export const extractMatchData = (data: TournamentMatchListResponse) => {
         match.match2bracketdata?.inheritedheader?.includes('(Bo')
           ? match.match2bracketdata?.inheritedheader
           : '';
-      stage = inheritedheaderWithData || match.match2bracketdata?.sectionheader;
+      stage =
+        inheritedheaderWithData ||
+        match.match2bracketdata?.sectionheader ||
+        match?.section;
       date = match.date;
       const [playerOneData, playerTwoData] = match.match2opponents;
-      playerOne = {
-        score: playerOneData.score,
-        ...extractPlayerData(playerOneData.match2players[0]),
-      };
-      playerTwo = {
-        score: playerTwoData.score,
-        ...extractPlayerData(playerTwoData.match2players[0]),
-      };
+      playerOne = extractPlayerData(playerOneData.match2players[0]);
+      playerTwo = extractPlayerData(playerTwoData.match2players[0]);
       games = match.match2games
         .map((gameData) => extractGameData(gameData))
         .filter((gameData) => gameData.winner.length === 1);
@@ -128,7 +125,6 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
         name: firstPlayerName,
         race: firstPlayerRace,
         flag: firstPlayerFlag,
-        score: firstPlayerScore,
       },
     } = currentEntry;
     const {
@@ -136,7 +132,6 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
         name: secondPlayerName,
         race: secondPlayerRace,
         flag: secondPlayerFlag,
-        score: secondPlayerScore,
       },
     } = currentEntry;
     const { games, stage } = currentEntry;
@@ -150,10 +145,16 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
         gamesWon: 0,
         gamesLost: 0,
         get winrate() {
-          return (
-            (this.gamesWon / (this.gamesWon + this.gamesLost)) *
-            100
-          ).toFixed(2);
+          let calculatedWinrate;
+
+          if (this.gamesWon === 0 && this.gamesLost === 0) {
+            calculatedWinrate = 0;
+          } else {
+            calculatedWinrate =
+              (this.gamesWon / (this.gamesWon + this.gamesLost)) * 100;
+          }
+
+          return calculatedWinrate.toFixed(2);
         },
       });
     }
@@ -167,10 +168,16 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
         gamesWon: 0,
         gamesLost: 0,
         get winrate() {
-          return (
-            (this.gamesWon / (this.gamesWon + this.gamesLost)) *
-            100
-          ).toFixed(2);
+          let calculatedWinrate;
+
+          if (this.gamesWon === 0 && this.gamesLost === 0) {
+            calculatedWinrate = 0;
+          } else {
+            calculatedWinrate =
+              (this.gamesWon / (this.gamesWon + this.gamesLost)) * 100;
+          }
+
+          return calculatedWinrate.toFixed(2);
         },
       });
     }
@@ -182,12 +189,20 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
       (data) => data.nickname === secondPlayerName
     ) as TournamentStatistics;
 
-    firstPlayerData.gamesWon += firstPlayerScore;
-    firstPlayerData.gamesLost += secondPlayerScore;
-    secondPlayerData.gamesWon += secondPlayerScore;
-    secondPlayerData.gamesLost += firstPlayerScore;
-
     const matchResults = getMatchResults(games, stage);
+
+    firstPlayerData.gamesWon += matchResults.filter(
+      (result) => result.winner === firstPlayerName
+    ).length;
+    firstPlayerData.gamesLost += matchResults.filter(
+      (result) => result.loser === firstPlayerName
+    ).length;
+    secondPlayerData.gamesWon += matchResults.filter(
+      (result) => result.winner === secondPlayerName
+    ).length;
+    secondPlayerData.gamesLost += matchResults.filter(
+      (result) => result.loser === secondPlayerName
+    ).length;
 
     firstPlayerData.matches = firstPlayerData.matches.concat(matchResults);
     secondPlayerData.matches = secondPlayerData.matches.concat(matchResults);
