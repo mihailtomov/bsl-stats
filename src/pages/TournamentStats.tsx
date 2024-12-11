@@ -1,13 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import classNames from 'clsx';
 
 import { DataContext } from '../store/data-context';
 import useTournamentStatisticsData from '../hooks/useTournamentStatisticsData';
 
 import PlayerInfo from '../components/PlayerInfo';
 import ResponsiveTable from '../components/ResponsiveTable';
-
-let filtered = false;
 
 const TABLE_HEADINGS_CONFIG = [
   { fieldLabel: 'nickname', textLabel: 'Player' },
@@ -17,15 +16,43 @@ const TABLE_HEADINGS_CONFIG = [
   { fieldLabel: 'winrate', textLabel: 'Winrate' },
 ];
 
+type SortState = { isSortedDescending: boolean; isUnsorted: boolean };
+type HeadingsState = Record<string, SortState>;
+
+const initialHeadingsState = {
+  nickname: { isSortedDescending: false, isUnsorted: true },
+  race: { isSortedDescending: false, isUnsorted: true },
+  gamesWon: { isSortedDescending: false, isUnsorted: true },
+  gamesLost: { isSortedDescending: false, isUnsorted: true },
+  winrate: { isSortedDescending: true, isUnsorted: false },
+};
+
+const getFontAwesomeArrowIcon = ({
+  isSortedDescending,
+  isUnsorted,
+}: SortState) => {
+  switch (true) {
+    case isSortedDescending && !isUnsorted:
+      return 'fa-arrow-down';
+    case !isSortedDescending && !isUnsorted:
+      return 'fa-arrow-up';
+    default:
+      return 'fa-arrows-up-down';
+  }
+};
+
 const TournamentStats = () => {
   const navigate = useNavigate();
   const { tournamentsList } = useContext(DataContext);
   const { tournamentNumber } = useParams();
   const { tournamentStatisticsData, setTournamentStatisticsData, dataLoading } =
     useTournamentStatisticsData();
+  const [headingsState, setHeadingsState] =
+    useState<HeadingsState>(initialHeadingsState);
 
   const sortTable = (e: React.BaseSyntheticEvent) => {
-    const sortByValue: string = e.target.dataset.field;
+    const sortByValue: string = e.currentTarget.dataset.field;
+    const isColumnDescending = headingsState[sortByValue].isSortedDescending;
 
     setTournamentStatisticsData((prevData) =>
       [...prevData].sort((a, b) => {
@@ -33,23 +60,38 @@ const TournamentStats = () => {
         const next = (b as any)[sortByValue];
 
         if (typeof curr === 'string' && typeof next === 'string') {
-          if (!filtered) {
-            return curr.localeCompare(next);
-          } else {
-            return next.localeCompare(curr);
-          }
+          return isColumnDescending
+            ? curr.localeCompare(next)
+            : next.localeCompare(curr);
         } else {
-          if (!filtered) {
-            return Number(next) - Number(curr);
-          } else {
-            return Number(curr) - Number(next);
-          }
+          return isColumnDescending
+            ? Number(curr) - Number(next)
+            : Number(next) - Number(curr);
         }
       })
     );
-
-    filtered = !filtered;
+    setHeadingsState((prevHeadingsState) => {
+      const { [sortByValue]: omitted, ...rest } = prevHeadingsState;
+      const sortableDataExcludingCurrentField = {} as HeadingsState;
+      for (const key in rest) {
+        sortableDataExcludingCurrentField[key] = {
+          isSortedDescending: false,
+          isUnsorted: true,
+        };
+      }
+      return {
+        ...sortableDataExcludingCurrentField,
+        [sortByValue]: {
+          isSortedDescending: !isColumnDescending,
+          isUnsorted: false,
+        },
+      };
+    });
   };
+
+  useEffect(() => {
+    setHeadingsState(initialHeadingsState);
+  }, [tournamentNumber]);
 
   if (
     !tournamentsList.some((tour) => tour.number === Number(tournamentNumber))
@@ -77,6 +119,14 @@ const TournamentStats = () => {
                   data-field={fieldLabel}
                 >
                   {textLabel}
+                  <div className="d-inline ms-1">
+                    <i
+                      className={classNames(
+                        'fa-solid fa-sm',
+                        getFontAwesomeArrowIcon(headingsState[fieldLabel])
+                      )}
+                    ></i>
+                  </div>
                 </th>
               ))}
             </tr>
