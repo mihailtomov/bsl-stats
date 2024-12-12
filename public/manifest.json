@@ -1,9 +1,17 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
+  "short_name": "BSL Stats",
+  "name": "BSL ProLeague Statistics",
+  "//icons-comment": "Provides icon support for different devices",
+  "icons": [
+    {
+      "src": "bsl-stats-icon.png",
+      "sizes": "64x64 32x32 16x16",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "https://bsl-stats.onrender.com/bsl",
+  "//theme_color-comment": "From MDN - This color may be applied to various browser UI elements, such as the toolbar, address bar, and status bar.",
+  "theme_color": "#D9F9FF",
+  "//background_color-comment": "To ensure your users see a consistent background color from launch to full load of your app",
   "background_color": "#ffffff"
 }
