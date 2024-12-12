@@ -5,7 +5,7 @@
   "icons": [
     {
       "src": "bsl-stats-icon.png",
-      "sizes": "64x64 32x32 16x16",
+      "sizes": "152x152",
       "type": "image/png"
     }
   ],
