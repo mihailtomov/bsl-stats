@@ -1,5 +1,12 @@
+html,
 body {
-  margin: 0;
+  height: 100%;
+}
+
+div#root {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
 }
 
 h2 {
@@ -14,8 +21,35 @@ h2 {
   text-decoration: underline;
 }
 
-.container-height {
-  min-height: 80vh;
+.show-consent-banner {
+  animation: show-banner 1s ease forwards;
+}
+
+.hide-consent-banner {
+  animation: hide-banner 1s ease forwards;
+}
+
+@keyframes show-banner {
+  from {
+    bottom: -100%;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes hide-banner {
+  from {
+    bottom: 0;
+    opacity: 1;
+  }
+  to {
+    bottom: -100%;
+    opacity: 0;
+    display: none;
+  }
 }
 
 @media (min-width: 768px) {

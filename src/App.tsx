@@ -7,6 +7,7 @@ import Tournaments from './pages/Tournaments';
 import TournamentStats from './pages/TournamentStats';
 import PlayerStats from './pages/PlayerStats';
 import About from './pages/About';
+import PrivacySection from './pages/PrivacySection';
 
 import './App.css';
 
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: 'about',
         element: <About />,
+      },
+      {
+        path: 'privacy-section',
+        element: <PrivacySection />,
       },
       {
         path: '*',

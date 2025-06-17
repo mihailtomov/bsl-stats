@@ -40,14 +40,12 @@ const About = () => {
         .
       </p>
       <p>
-        App icons attribution below:
-        <div>
-          <Link
-            url="https://www.flaticon.com/free-icons/growth"
-            title="growth icons"
-            text="Growth icons created by Freepik - Flaticon"
-          />
-        </div>
+        App icons attribution below:{<br />}
+        <Link
+          url="https://www.flaticon.com/free-icons/growth"
+          title="growth icons"
+          text="Growth icons created by Freepik - Flaticon"
+        />
       </p>
     </div>
   );

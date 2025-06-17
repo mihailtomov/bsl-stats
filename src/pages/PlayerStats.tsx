@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import classNames from 'clsx';
 
 import { getIndividualPlayerStats, getPlayerMatchupData } from '../utils/data';
-import { getFormattedDate } from '../utils/format';
+import { getFormattedDate } from '../utils/utils';
 import { DataContext } from '../store/data-context';
 import useTournamentStatisticsData from '../hooks/useTournamentStatisticsData';
 

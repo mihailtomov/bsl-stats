@@ -10,6 +10,7 @@
 # misc
 /project_images
 local-dev-notes.md
+to-do-list.md
 
 # env variables
 /server/.env
