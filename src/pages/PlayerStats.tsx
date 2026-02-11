@@ -19,7 +19,7 @@ const raceSrc: Record<string, string> = {
   P: protossSrc,
   T: terranSrc,
   Z: zergSrc,
-  R: randomSrc,
+  R: randomSrc
 };
 
 const renderMatchupWinrate = (matchupResult: string) => {
@@ -163,9 +163,8 @@ const PlayerStats = () => {
                 <td
                   className={classNames('fw-bold', {
                     'text-success': isWinner,
-                    'text-danger': !isWinner,
-                  })}
-                >
+                    'text-danger': !isWinner
+                  })}>
                   {result}
                 </td>
                 <td>{map ? map : 'N/A'}</td>

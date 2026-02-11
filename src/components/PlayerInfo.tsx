@@ -18,7 +18,7 @@ const PlayerInfo: React.FC<Props> = ({
   tournamentStatisticsData,
   nickname,
   flag,
-  shouldNavigate = false,
+  shouldNavigate = false
 }) => {
   const navigate = useNavigate();
   const { tournamentNumber } = useParams();
@@ -26,16 +26,15 @@ const PlayerInfo: React.FC<Props> = ({
 
   const navigateToPlayerStats = () =>
     navigate(`/bsl/${tournamentNumber}/${nickname}`, {
-      state: tournamentStatisticsData,
+      state: tournamentStatisticsData
     });
 
   return (
     <div
       className={classNames('d-flex align-items-baseline gap-1 hover-pointer', {
-        'hover-underline': shouldNavigate,
+        'hover-underline': shouldNavigate
       })}
-      onClick={shouldNavigate ? navigateToPlayerStats : noop}
-    >
+      onClick={shouldNavigate ? navigateToPlayerStats : noop}>
       <img
         src={`https://flagcdn.com/16x12/${Object.keys(countryCodes).find(
           (key) => countryCodes[key] === flag

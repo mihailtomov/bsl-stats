@@ -6,7 +6,7 @@ import type {
   RawPlayerData,
   RawGameData,
   TournamentStatistics,
-  MatchResultData,
+  MatchResultData
 } from '../types/data';
 
 let identifier = 1;
@@ -14,7 +14,7 @@ let identifier = 1;
 const extractPlayerData = ({
   name,
   flag,
-  extradata: { faction },
+  extradata: { faction }
 }: RawPlayerData) => ({ name, flag, race: faction });
 
 const extractGameData = ({
@@ -22,13 +22,13 @@ const extractGameData = ({
   participants,
   winner,
   walkover,
-  date,
+  date
 }: RawGameData) => ({
   map,
   participants,
   winner,
   walkover,
-  date,
+  date
 });
 
 const getMatchResults = (games: RawGameData[], stage: string) => {
@@ -63,7 +63,7 @@ const getMatchResults = (games: RawGameData[], stage: string) => {
         loserRace,
         stage,
         map,
-        datePlayed: date,
+        datePlayed: date
       };
     });
 
@@ -81,8 +81,8 @@ export const extractProleagueTournaments = (data: TournamentsListResponse) => {
   const tournamentsPageData = tournamentsList
     .filter((pageData) => pageData.pagename.match(tournamentsPattern))
     .map(({ pageid, pagename }) => ({
-      number: Number(pagename.split('/')[1]),
-      pageId: pageid,
+      number: Number(pagename.split('/')[1] ?? 1),
+      pageId: pageid
     }));
 
   return tournamentsPageData;
@@ -124,15 +124,15 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
       playerOne: {
         name: firstPlayerName,
         race: firstPlayerRace,
-        flag: firstPlayerFlag,
-      },
+        flag: firstPlayerFlag
+      }
     } = currentEntry;
     const {
       playerTwo: {
         name: secondPlayerName,
         race: secondPlayerRace,
-        flag: secondPlayerFlag,
-      },
+        flag: secondPlayerFlag
+      }
     } = currentEntry;
     const { games, stage } = currentEntry;
 
@@ -155,7 +155,7 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
           }
 
           return calculatedWinrate.toFixed(2);
-        },
+        }
       });
     }
 
@@ -178,7 +178,7 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
           }
 
           return calculatedWinrate.toFixed(2);
-        },
+        }
       });
     }
 
@@ -287,7 +287,7 @@ export const getPlayerMatchupData = (
     vsZerg: formatRecord(vsZergRecord),
     vsTerran: formatRecord(vsTerranRecord),
     vsProtoss: formatRecord(vsProtossRecord),
-    vsRandom: formatRecord(vsRandomRecord),
+    vsRandom: formatRecord(vsRandomRecord)
   };
 };
 

@@ -12,14 +12,12 @@ const NavMenu = () => {
           data-bs-target="#app-navbar"
           aria-controls="app-navbar"
           aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+          aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
         <div
           className="justify-content-center navbar-collapse collapse"
-          id="app-navbar"
-        >
+          id="app-navbar">
           <div className="navbar-nav">
             <NavLink className="nav-link" to="/">
               Home

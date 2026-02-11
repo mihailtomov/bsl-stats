@@ -29,10 +29,9 @@ const ConsentBanner = () => {
         'container-fluid position-fixed bg-dark text-white text-center',
         {
           ['show-consent-banner']: showBanner,
-          ['hide-consent-banner']: !showBanner,
+          ['hide-consent-banner']: !showBanner
         }
-      )}
-    >
+      )}>
       <div className="my-2">
         I am using Microsoft Clarity to track user interaction. You can read
         more about it and opt-in or out at any point from{' '}
@@ -48,15 +47,13 @@ const ConsentBanner = () => {
         <button
           type="button"
           className="btn btn-primary"
-          onClick={consentGranted}
-        >
+          onClick={consentGranted}>
           Yes
         </button>
         <button
           type="button"
           className="btn btn-secondary"
-          onClick={consentDenied}
-        >
+          onClick={consentDenied}>
           No
         </button>
       </div>

@@ -4,11 +4,11 @@ import { useParams, useLocation } from 'react-router-dom';
 import { fetchJsonData } from '../api/fetch';
 import {
   TournamentStatistics,
-  TournamentMatchListResponse,
+  TournamentMatchListResponse
 } from '../types/data';
 import {
   getSortedTournamentStatisticsFromMatchListResponse,
-  getTournamentPageId,
+  getTournamentPageId
 } from '../utils/data';
 import { DataContext } from '../store/data-context';
 

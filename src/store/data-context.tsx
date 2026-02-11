@@ -15,7 +15,7 @@ interface DataContext {
 const defaultState = {
   tournamentsList: [],
   countryCodes: {},
-  fetchDataError: false,
+  fetchDataError: false
 };
 
 export const DataContext = createContext<DataContext>(defaultState);
@@ -27,9 +27,8 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = (props) => {
 
   const fetchData = async () => {
     try {
-      const tournamentsData: TournamentsListResponse = await fetchJsonData(
-        '/tournaments'
-      );
+      const tournamentsData: TournamentsListResponse =
+        await fetchJsonData('/tournaments');
       const countryCodes: CountryCodes = await fetchJsonData(
         'https://flagcdn.com/en/codes.json'
       );
@@ -50,8 +49,7 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = (props) => {
 
   return (
     <DataContext.Provider
-      value={{ tournamentsList, countryCodes, fetchDataError }}
-    >
+      value={{ tournamentsList, countryCodes, fetchDataError }}>
       {props.children}
     </DataContext.Provider>
   );

@@ -17,8 +17,7 @@ const Tournaments = () => {
                 className={({ isActive }) =>
                   classNames('nav-link', { 'fw-bold': isActive })
                 }
-                to={`${tournament.number}`}
-              >{`BSL ${tournament.number}`}</NavLink>
+                to={`${tournament.number}`}>{`BSL ${tournament.number}`}</NavLink>
             </div>
           ))
         ) : (

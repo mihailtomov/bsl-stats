@@ -11,15 +11,14 @@ const ResponsiveTable: React.FC<Props> = ({
   children,
   containerClassName,
   tableClassName,
-  hover = true,
+  hover = true
 }) => {
   return (
     <div className={classNames('table-responsive', containerClassName)}>
       <table
         className={classNames('table table-bordered', tableClassName, {
-          'table-hover': hover,
-        })}
-      >
+          'table-hover': hover
+        })}>
         {children}
       </table>
     </div>

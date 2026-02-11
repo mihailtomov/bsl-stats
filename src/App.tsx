@@ -24,21 +24,21 @@ const router = createBrowserRouter([
         children: [
           {
             path: ':tournamentNumber',
-            element: <TournamentStats />,
+            element: <TournamentStats />
           },
           {
             path: ':tournamentNumber/:player',
-            element: <PlayerStats />,
-          },
-        ],
+            element: <PlayerStats />
+          }
+        ]
       },
       {
         path: 'about',
-        element: <About />,
+        element: <About />
       },
       {
         path: 'privacy-section',
-        element: <PrivacySection />,
+        element: <PrivacySection />
       },
       {
         path: '*',
@@ -47,10 +47,10 @@ const router = createBrowserRouter([
             Looks like there is nothing here. Try one of the links from the menu
             above.
           </p>
-        ),
-      },
-    ],
-  },
+        )
+      }
+    ]
+  }
 ]);
 
 const App = () => <RouterProvider router={router} />;

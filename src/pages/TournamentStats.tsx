@@ -13,7 +13,7 @@ const TABLE_HEADINGS_CONFIG = [
   { fieldLabel: 'race', textLabel: 'Race' },
   { fieldLabel: 'gamesWon', textLabel: 'Wins' },
   { fieldLabel: 'gamesLost', textLabel: 'Losses' },
-  { fieldLabel: 'winrate', textLabel: 'Winrate' },
+  { fieldLabel: 'winrate', textLabel: 'Winrate' }
 ];
 
 type SortState = { isSortedDescending: boolean; isUnsorted: boolean };
@@ -24,12 +24,12 @@ const initialHeadingsState = {
   race: { isSortedDescending: false, isUnsorted: true },
   gamesWon: { isSortedDescending: false, isUnsorted: true },
   gamesLost: { isSortedDescending: false, isUnsorted: true },
-  winrate: { isSortedDescending: true, isUnsorted: false },
+  winrate: { isSortedDescending: true, isUnsorted: false }
 };
 
 const getFontAwesomeArrowIcon = ({
   isSortedDescending,
-  isUnsorted,
+  isUnsorted
 }: SortState) => {
   switch (true) {
     case isSortedDescending && !isUnsorted:
@@ -76,15 +76,15 @@ const TournamentStats = () => {
       for (const key in rest) {
         sortableDataExcludingCurrentField[key] = {
           isSortedDescending: false,
-          isUnsorted: true,
+          isUnsorted: true
         };
       }
       return {
         ...sortableDataExcludingCurrentField,
         [sortByValue]: {
           isSortedDescending: !isColumnDescending,
-          isUnsorted: false,
-        },
+          isUnsorted: false
+        }
       };
     });
   };
@@ -116,16 +116,14 @@ const TournamentStats = () => {
                   key={fieldLabel}
                   className="hover-pointer"
                   onClick={sortTable}
-                  data-field={fieldLabel}
-                >
+                  data-field={fieldLabel}>
                   {textLabel}
                   <div className="d-inline ms-1">
                     <i
                       className={classNames(
                         'fa-solid fa-sm',
                         getFontAwesomeArrowIcon(headingsState[fieldLabel])
-                      )}
-                    ></i>
+                      )}></i>
                   </div>
                 </th>
               ))}
@@ -139,10 +137,9 @@ const TournamentStats = () => {
                   key={nickname}
                   onClick={() =>
                     navigate(`/bsl/${tournamentNumber}/${nickname}`, {
-                      state: tournamentStatisticsData,
+                      state: tournamentStatisticsData
                     })
-                  }
-                >
+                  }>
                   <td>
                     <PlayerInfo {...{ nickname, flag }} />
                   </td>
