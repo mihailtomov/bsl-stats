@@ -40,10 +40,12 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = (props) => {
       setCountryCodes(countryCodes);
     } catch (error) {
       setFetchDataError(true);
+      console.log(error);
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
   }, []);
 

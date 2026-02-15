@@ -6,10 +6,10 @@ const About = () => {
   return (
     <div className="my-3 text-start">
       <p>
-        I've developed this app out of love for the foreign BW community and the
-        game itself. I know all of this data is already available on Liquipedia,
-        but i found combining these stats in a simpler UI makes it easier to
-        gain an overview of players performance.
+        I&apos;ve developed this app out of love for the foreign BW community
+        and the game itself. I know all of this data is already available on
+        Liquipedia, but i found combining these stats in a simpler UI makes it
+        easier to gain an overview of players performance.
       </p>
       <p>
         Big respect to{' '}
@@ -24,11 +24,11 @@ const About = () => {
         />
       </p>
       <p>
-        It's very important to give credit to Liquipedia's development team for
-        exposing and maintaining a free public API from where this data can be
-        accessed from. Special thanks to Nydra for providing me with the API
-        key, top man! For Brood War there are two API's available and the one
-        i'm using for this project is{' '}
+        It&apos;s very important to give credit to Liquipedia&apos;s development
+        team for exposing and maintaining a free public API from where this data
+        can be accessed from. Special thanks to Nydra for providing me with the
+        API key, top man! For Brood War there are two API&apos;s available and
+        the one i&apos;m using for this project is{' '}
         <Link url="https://api.liquipedia.net/" text="Liquipedia's DB API." />
       </p>
       <p>

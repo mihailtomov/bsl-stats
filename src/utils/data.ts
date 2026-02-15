@@ -242,10 +242,10 @@ export const getPlayerMatchupData = (
   nickname: string,
   matches: MatchResultData[]
 ) => {
-  let vsZergRecord = { won: 0, lost: 0 };
-  let vsTerranRecord = { won: 0, lost: 0 };
-  let vsProtossRecord = { won: 0, lost: 0 };
-  let vsRandomRecord = { won: 0, lost: 0 };
+  const vsZergRecord = { won: 0, lost: 0 };
+  const vsTerranRecord = { won: 0, lost: 0 };
+  const vsProtossRecord = { won: 0, lost: 0 };
+  const vsRandomRecord = { won: 0, lost: 0 };
 
   matches.forEach((result) => {
     const { winner, winnerRace, loserRace } = result;

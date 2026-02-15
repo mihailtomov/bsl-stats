@@ -39,7 +39,7 @@ const PrivacySection = () => {
         <li>What visitors click on</li>
         <li>How far down the page someone scrolls</li>
         <li>
-          If anything on the site seems confusing or isn't working properly
+          If anything on the site seems confusing or isn&apos;t working properly
         </li>
       </ul>
       <p>
@@ -55,7 +55,7 @@ const PrivacySection = () => {
           This helps me improve the website and make it more user-friendly.
         </li>
         <li>
-          Clarity doesn’t collect personal details like your name or email.
+          Clarity doesn&apos;t collect personal details like your name or email.
         </li>
         <li>
           Microsoft may also use some of this data to improve their own
@@ -63,7 +63,7 @@ const PrivacySection = () => {
         </li>
       </ul>
       <p>
-        Clarity uses cookies to remember if you've been here before. These
+        Clarity uses cookies to remember if you&apos;ve been here before. These
         cookies are set by Microsoft and might also track your activity on other
         websites that use Clarity. For more information about how Microsoft
         collects and uses your data, visit the{' '}
@@ -74,8 +74,8 @@ const PrivacySection = () => {
           />
         }
         . I also use a functional cookie to remember your choice. This cookie
-        stores your answer so I don't bother you with my cookie banner on every
-        visit.
+        stores your answer so I don&apos;t bother you with my cookie banner on
+        every visit.
       </p>
       <p>
         You are in complete control whether I or Microsoft can collect this data

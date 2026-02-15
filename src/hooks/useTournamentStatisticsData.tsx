@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 
 import { fetchJsonData } from '../api/fetch';
@@ -23,7 +23,7 @@ const useTournamentStatisticsData = () => {
   const { tournamentsList } = useContext(DataContext);
   const { tournamentNumber } = useParams();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setDataLoading(true);
     const pageId = getTournamentPageId(
       tournamentsList,
@@ -37,7 +37,7 @@ const useTournamentStatisticsData = () => {
       );
     setDataLoading(false);
     setTournamentStatisticsData(sortedTournamentStatistics);
-  };
+  }, [tournamentNumber, tournamentsList]);
 
   useEffect(() => {
     if (
@@ -47,10 +47,17 @@ const useTournamentStatisticsData = () => {
       ) &&
       !storedTournamentStatisticsData
     ) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTournamentStatisticsData([]);
       fetchData();
     }
-  }, [tournamentNumber, tournamentsList]);
+  }, [
+    tournamentNumber,
+    tournamentsList,
+    storedTournamentStatisticsData,
+    setTournamentStatisticsData,
+    fetchData
+  ]);
 
   return { tournamentStatisticsData, setTournamentStatisticsData, dataLoading };
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import classNames from 'clsx';
@@ -71,6 +72,7 @@ const TournamentStats = () => {
       })
     );
     setHeadingsState((prevHeadingsState) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [sortByValue]: omitted, ...rest } = prevHeadingsState;
       const sortableDataExcludingCurrentField = {} as HeadingsState;
       for (const key in rest) {
@@ -98,8 +100,8 @@ const TournamentStats = () => {
   ) {
     return (
       <p className="mt-4">
-        Tournament number doesn't exist yet. Try a different one from the links
-        above.
+        Tournament number doesn&apos;t exist yet. Try a different one from the
+        links above.
       </p>
     );
   }
