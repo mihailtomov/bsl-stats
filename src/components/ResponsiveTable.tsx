@@ -1,5 +1,5 @@
-import React from 'react';
 import classNames from 'clsx';
+import React from 'react';
 
 interface Props extends React.PropsWithChildren {
   containerClassName?: string;

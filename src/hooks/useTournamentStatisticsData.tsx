@@ -1,16 +1,15 @@
-import { useState, useEffect, useContext, useCallback } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { fetchJsonData } from '../api/fetch';
+import { DataContext } from '../store/data-context';
 import {
-  TournamentStatistics,
-  TournamentMatchListResponse
-} from '../types/data';
+  TournamentMatchListResponse,
+  TournamentStatistics } from '../types/data';
 import {
   getSortedTournamentStatisticsFromMatchListResponse,
   getTournamentPageId
 } from '../utils/data';
-import { DataContext } from '../store/data-context';
 
 const useTournamentStatisticsData = () => {
   const storedTournamentStatisticsData = useLocation().state as

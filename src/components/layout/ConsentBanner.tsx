@@ -1,6 +1,6 @@
+import classNames from 'clsx';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import classNames from 'clsx';
 
 import { getAYearFromNowDate, getCookieByName } from '../../utils/utils';
 

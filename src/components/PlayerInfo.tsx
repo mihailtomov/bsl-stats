@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import classNames from 'clsx';
+import React, { useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { TournamentStatistics } from '../types/data';
 import { DataContext } from '../store/data-context';
+import { TournamentStatistics } from '../types/data';
 
 interface Props {
   nickname: string;

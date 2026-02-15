@@ -1,13 +1,12 @@
 import type {
+  MatchData,
+  MatchResultData,
+  RawGameData,
+  RawPlayerData,
+  TournamentMatchListResponse,
   TournamentsList,
   TournamentsListResponse,
-  TournamentMatchListResponse,
-  MatchData,
-  RawPlayerData,
-  RawGameData,
-  TournamentStatistics,
-  MatchResultData
-} from '../types/data';
+  TournamentStatistics } from '../types/data';
 
 let identifier = 1;
 

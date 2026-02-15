@@ -1,15 +1,15 @@
+import './App.css';
+
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import Layout from './pages/Layout';
+import About from './pages/About';
 import Home from './pages/Home';
+import Layout from './pages/Layout';
+import PlayerStats from './pages/PlayerStats';
+import PrivacySection from './pages/PrivacySection';
 import Tournaments from './pages/Tournaments';
 import TournamentStats from './pages/TournamentStats';
-import PlayerStats from './pages/PlayerStats';
-import About from './pages/About';
-import PrivacySection from './pages/PrivacySection';
-
-import './App.css';
 
 const router = createBrowserRouter([
   {

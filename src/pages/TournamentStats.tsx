@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import classNames from 'clsx';
-
-import { DataContext } from '../store/data-context';
-import useTournamentStatisticsData from '../hooks/useTournamentStatisticsData';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import PlayerInfo from '../components/PlayerInfo';
 import ResponsiveTable from '../components/ResponsiveTable';
+import useTournamentStatisticsData from '../hooks/useTournamentStatisticsData';
+import { DataContext } from '../store/data-context';
 
 const TABLE_HEADINGS_CONFIG = [
   { fieldLabel: 'nickname', textLabel: 'Player' },

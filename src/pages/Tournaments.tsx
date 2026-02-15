@@ -1,6 +1,6 @@
+import classNames from 'clsx';
 import React, { useContext } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import classNames from 'clsx';
 
 import { DataContext } from '../store/data-context';
 

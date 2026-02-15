@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { getCookieByName, getAYearFromNowDate } from '../utils/utils';
-
 import Link from '../components/Link';
+import { getAYearFromNowDate, getCookieByName } from '../utils/utils';
 
 declare global {
   interface Window {

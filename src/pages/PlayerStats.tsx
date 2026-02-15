@@ -1,19 +1,17 @@
+import classNames from 'clsx';
 import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import classNames from 'clsx';
-
-import { getIndividualPlayerStats, getPlayerMatchupData } from '../utils/data';
-import { getFormattedDate } from '../utils/utils';
-import { DataContext } from '../store/data-context';
-import useTournamentStatisticsData from '../hooks/useTournamentStatisticsData';
-
-import PlayerInfo from '../components/PlayerInfo';
-import ResponsiveTable from '../components/ResponsiveTable';
 
 import protossSrc from '../assets/protoss.png';
+import randomSrc from '../assets/random.png';
 import terranSrc from '../assets/terran.png';
 import zergSrc from '../assets/zerg.png';
-import randomSrc from '../assets/random.png';
+import PlayerInfo from '../components/PlayerInfo';
+import ResponsiveTable from '../components/ResponsiveTable';
+import useTournamentStatisticsData from '../hooks/useTournamentStatisticsData';
+import { DataContext } from '../store/data-context';
+import { getIndividualPlayerStats, getPlayerMatchupData } from '../utils/data';
+import { getFormattedDate } from '../utils/utils';
 
 const raceSrc: Record<string, string> = {
   P: protossSrc,
