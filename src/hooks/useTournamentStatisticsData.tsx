@@ -5,7 +5,8 @@ import { fetchJsonData } from '../api/fetch';
 import { DataContext } from '../store/data-context';
 import {
   TournamentMatchListResponse,
-  TournamentStatistics } from '../types/data';
+  TournamentStatistics
+} from '../types/data';
 import {
   getSortedTournamentStatisticsFromMatchListResponse,
   getTournamentPageId

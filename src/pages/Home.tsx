@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
 import { DataContext } from '../store/data-context';
 
 const Home = () => {
   const { fetchDataError } = useContext(DataContext);
+  const { t } = useTranslation();
 
-  if (fetchDataError) return <p>Unexpected error occurred on the server.</p>;
+  if (fetchDataError) return <p>{t('error.fetchDataError')}</p>;
 
   return (
     <>

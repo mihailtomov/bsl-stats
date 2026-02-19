@@ -28,7 +28,7 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = (props) => {
   const fetchData = async () => {
     try {
       const tournamentsData: TournamentsListResponse =
-        await fetchJsonData('/tournaments');
+        await fetchJsonData('/tournamentsdas');
       const countryCodes: CountryCodes = await fetchJsonData(
         'https://flagcdn.com/en/codes.json'
       );

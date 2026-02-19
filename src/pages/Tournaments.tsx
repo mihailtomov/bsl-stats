@@ -1,11 +1,13 @@
 import classNames from 'clsx';
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import { DataContext } from '../store/data-context';
 
 const Tournaments = () => {
   const { tournamentsList } = useContext(DataContext);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -21,10 +23,7 @@ const Tournaments = () => {
             </div>
           ))
         ) : (
-          <p>
-            There are no tournaments to display. Something went wrong with
-            obtaining the list from the server.
-          </p>
+          <p>{t('error.tournamentListUnavailable')}</p>
         )}
       </div>
       <Outlet />
