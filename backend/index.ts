@@ -3,10 +3,10 @@ import fetch from 'node-fetch';
 import querystring from 'node:querystring';
 import https from 'node:https';
 
-import { config } from './config/config.js';
-import { initializeCronJob } from './services/cron-job.js';
-import { DataType, CacheSeconds } from './enums/index.js';
-import middlewares from './middlewares/index.js';
+import { config } from './config/config.ts';
+import { initializeCronJob } from './services/cron-job.ts';
+import { DataType, CacheSeconds } from './enums/index.ts';
+import middlewares from './middlewares/index.ts';
 
 const { apiUrl, apiParams, apiHeaders } = config;
 const { serverHeaders, redisClient, redisCache } = middlewares;
@@ -19,7 +19,7 @@ app.use(serverHeaders);
 // home endpoint that is hit by a cron job to prevent web service from sleeping on render.com
 app.get('/', (req, res) => {
   console.log(
-    'Successful self-ping. Self-pinging the home endpoint every 14th minute to prevent service from sleeping.'
+    'Successful self-ping. Self-pinging the home endpoint every 14th minute to prevent service from sleeping.',
   );
   res
     .status(200)
@@ -30,14 +30,14 @@ app.get('/tournaments', redisCache, async (req, res) => {
   try {
     const response = await fetch(
       `${apiUrl}${DataType.Tournament}?${querystring.stringify(
-        apiParams.tournament
+        apiParams.tournament,
       )}`,
       {
         ...apiHeaders,
         agent: new https.Agent({
           rejectUnauthorized: false,
         }),
-      }
+      },
     );
 
     // proper response handling in case service gets rate limited
@@ -71,7 +71,7 @@ app.get('/matchlist/:pageid', redisCache, async (req, res) => {
         agent: new https.Agent({
           rejectUnauthorized: false,
         }),
-      }
+      },
     );
 
     const data = await response.json();

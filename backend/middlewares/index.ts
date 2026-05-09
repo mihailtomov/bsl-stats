@@ -1,9 +1,10 @@
-import { initializeRedisClient } from '../services/redis.js';
-import { CacheSeconds } from '../enums/index.js';
+import { initializeRedisClient } from '../services/redis.ts';
+import { CacheSeconds } from '../enums/index.ts';
+import type { RequestHandler } from 'express';
 
 const client = await initializeRedisClient();
 
-const serverHeaders = (req, res, next) => {
+const serverHeaders: RequestHandler = (req, res, next) => {
   res.set({
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET',
@@ -13,7 +14,7 @@ const serverHeaders = (req, res, next) => {
   next();
 };
 
-const redisCache = async (req, res, next) => {
+const redisCache: RequestHandler = async (req, res, next) => {
   const cacheKey = req.originalUrl;
 
   try {
