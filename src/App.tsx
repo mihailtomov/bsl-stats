@@ -2,10 +2,13 @@ import './App.css';
 
 import i18next from 'i18next';
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider
+} from 'react-router-dom';
 
 import About from './pages/About';
-import Home from './pages/Home';
 import Layout from './pages/Layout';
 import PlayerStats from './pages/PlayerStats';
 import PrivacySection from './pages/PrivacySection';
@@ -18,7 +21,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <p>{i18next.t('error.general')}</p>,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <Navigate to="bsl" /> },
       {
         path: 'bsl',
         element: <Tournaments />,

@@ -19,9 +19,6 @@ const NavMenu = () => {
           className="justify-content-center navbar-collapse collapse"
           id="app-navbar">
           <div className="navbar-nav">
-            <NavLink className="nav-link" to="/">
-              Home
-            </NavLink>
             <NavLink className="nav-link" to="/bsl">
               BSL Tournaments
             </NavLink>

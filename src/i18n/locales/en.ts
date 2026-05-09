@@ -84,8 +84,7 @@ const en = {
     error: {
       general: 'Something went wrong!',
       pageNotFound:
-        'Looks like there is nothing here. Try one of the links from the menu above.',
-      fetchDataError: 'Unexpected error occurred on the server.'
+        'Looks like there is nothing here. Try one of the links from the menu above.'
     }
   }
 } as const;
