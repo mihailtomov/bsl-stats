@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import classNames from 'clsx';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import PlayerInfo from '../components/PlayerInfo';
@@ -47,6 +48,7 @@ const TournamentStats = () => {
   const { tournamentNumber } = useParams();
   const { tournamentStatisticsData, setTournamentStatisticsData, dataLoading } =
     useTournamentStatisticsData();
+  const { t } = useTranslation();
   const [headingsState, setHeadingsState] =
     useState<HeadingsState>(initialHeadingsState);
 
@@ -99,8 +101,7 @@ const TournamentStats = () => {
   ) {
     return (
       <p className="mt-4">
-        Tournament number doesn&apos;t exist yet. Try a different one from the
-        links above.
+        {t('page.tournamentStats.error.invalidTournamentNumber')}
       </p>
     );
   }
@@ -155,7 +156,7 @@ const TournamentStats = () => {
         </ResponsiveTable>
       )}
       {tournamentStatisticsData.length === 0 && !dataLoading && (
-        <p>No match data available.</p>
+        <p>{t('page.tournamentStats.error.emptyMatchData')}</p>
       )}
     </>
   );

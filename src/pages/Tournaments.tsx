@@ -23,7 +23,7 @@ const Tournaments = () => {
             </div>
           ))
         ) : (
-          <p>{t('error.tournamentListUnavailable')}</p>
+          <p>{t('page.tournaments.error.listUnavailable')}</p>
         )}
       </div>
       <Outlet />

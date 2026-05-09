@@ -1,5 +1,6 @@
 import './App.css';
 
+import i18next from 'i18next';
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
-    errorElement: <p>Something went wrong!</p>,
+    errorElement: <p>{i18next.t('error.general')}</p>,
     children: [
       { index: true, element: <Home /> },
       {
@@ -42,12 +43,7 @@ const router = createBrowserRouter([
       },
       {
         path: '*',
-        element: (
-          <p>
-            Looks like there is nothing here. Try one of the links from the menu
-            above.
-          </p>
-        )
+        element: <p>{i18next.t('error.pageNotFound')}</p>
       }
     ]
   }

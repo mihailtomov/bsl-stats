@@ -1,50 +1,74 @@
 import React from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 
 import Link from '../components/Link';
 
 const About = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="my-3 text-start">
+      <p>{t('page.about.introduction')}</p>
       <p>
-        I&apos;ve developed this app out of love for the foreign BW community
-        and the game itself. I know all of this data is already available on
-        Liquipedia, but i found combining these stats in a simpler UI makes it
-        easier to gain an overview of players performance.
-      </p>
-      <p>
-        Big respect to{' '}
-        <Link url="https://www.twitch.tv/zzzeropl" text="ZZZeroPL" /> and the
-        people he has been working with throughout the years to create so much
-        content and keep the foreign BW competitive scene alive! Please feel
-        free to support them in any way you can by following the streaming
-        channels or consider{' '}
-        <Link
-          url="https://www.patreon.com/Bombastic"
-          text="becoming a patreon here."
+        <Trans
+          i18nKey="page.about.links.zzzero"
+          components={{
+            zzzero: (
+              <Link url="https://www.twitch.tv/zzzeropl" text="ZZZeroPL" />
+            )
+          }}
+        />
+        <Trans
+          i18nKey="page.about.links.patreon"
+          components={{
+            patreon: (
+              <Link
+                url="https://www.patreon.com/Bombastic"
+                text="becoming a patreon here."
+              />
+            )
+          }}
         />
       </p>
       <p>
-        It&apos;s very important to give credit to Liquipedia&apos;s development
-        team for exposing and maintaining a free public API from where this data
-        can be accessed from. Special thanks to Nydra for providing me with the
-        API key, top man! For Brood War there are two API&apos;s available and
-        the one i&apos;m using for this project is{' '}
-        <Link url="https://api.liquipedia.net/" text="Liquipedia's DB API." />
-      </p>
-      <p>
-        This data is under a CC BY-SA 3.0 license. For more information see:{' '}
-        <Link
-          url="https://creativecommons.org/licenses/by-sa/3.0/"
-          text="https://creativecommons.org/licenses/by-sa/3.0/"
+        <Trans
+          i18nKey="page.about.links.liquipedia"
+          components={{
+            liquipediadb: (
+              <Link
+                url="https://api.liquipedia.net/"
+                text="Liquipedia's DB API."
+              />
+            )
+          }}
         />
-        .
       </p>
       <p>
-        App icons attribution below:{<br />}
-        <Link
-          url="https://www.flaticon.com/free-icons/growth"
-          title="growth icons"
-          text="Growth icons created by Freepik - Flaticon"
+        <Trans
+          i18nKey="page.about.links.dataAttribution"
+          components={{
+            license: (
+              <Link
+                url="https://creativecommons.org/licenses/by-sa/3.0/"
+                text="https://creativecommons.org/licenses/by-sa/3.0/"
+              />
+            )
+          }}
+        />
+      </p>
+      <p>
+        <Trans
+          i18nKey="page.about.links.iconsAttribution"
+          components={{
+            icons: (
+              <Link
+                url="https://www.flaticon.com/free-icons/growth"
+                title="growth icons"
+                text="Growth icons created by Freepik - Flaticon"
+              />
+            ),
+            br: <br />
+          }}
         />
       </p>
     </div>

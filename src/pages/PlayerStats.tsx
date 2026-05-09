@@ -1,5 +1,6 @@
 import classNames from 'clsx';
 import React, { useContext } from 'react';
+import { Trans } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
 import protossSrc from '../assets/protoss.png';
@@ -56,9 +57,11 @@ const PlayerStats = () => {
   ) {
     return (
       <p className="mt-4">
-        Player with nickname <b>{player}</b> did not participate in BSL{' '}
-        {tournamentNumber}. Click on a tournament number above to view the list
-        with participating players.
+        <Trans
+          i18nKey="page.playerStats.error.playerDidNotParticipate"
+          values={{ player, tournamentNumber }}
+          components={{ bold: <b /> }}
+        />
       </p>
     );
   }

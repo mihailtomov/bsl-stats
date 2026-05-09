@@ -1,6 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 
 import Link from '../components/Link';
+import enTranslations from '../i18n/locales/en';
 import { getAYearFromNowDate, getCookieByName } from '../utils/utils';
 
 declare global {
@@ -9,7 +12,18 @@ declare global {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { tool, ...filteredClarityIntroductionKeys } =
+  enTranslations.translation.page.privacySection.clarity.introduction;
+
+type ClarityIntroductionKeys = keyof typeof filteredClarityIntroductionKeys;
+const CLARITY_INTRODUCTION_KEYS = Object.keys(
+  filteredClarityIntroductionKeys
+) as ClarityIntroductionKeys[];
+
 const PrivacySection = () => {
+  const { t } = useTranslation();
+
   const consentCookieValue = getCookieByName('consent')?.value;
   const hasConsentBeenGranted = consentCookieValue === 'yes';
 
@@ -28,59 +42,41 @@ const PrivacySection = () => {
 
   return (
     <div className="text-start">
+      <p>{t('page.privacySection.clarity.introduction.tool')}</p>
+      <ul>
+        {CLARITY_INTRODUCTION_KEYS.map((translationKey) => (
+          <li key={translationKey}>
+            {t(`page.privacySection.clarity.introduction.${translationKey}`)}
+          </li>
+        ))}
+      </ul>
+      <p>{t('page.privacySection.clarity.functionality.recording')}</p>
       <p>
-        I use a tool called Microsoft Clarity to better understand how people
-        use this website. By default it is disabled until user consent is
-        provided. When enabled, Clarity shows me things like:
+        <b>{t('page.privacySection.clarity.functionality.statement')}</b>
       </p>
       <ul>
-        <li>Which pages are the most visited</li>
-        <li>What visitors click on</li>
-        <li>How far down the page someone scrolls</li>
+        <li>{t('page.privacySection.clarity.functionality.userFriendly')}</li>
         <li>
-          If anything on the site seems confusing or isn&apos;t working properly
+          {t('page.privacySection.clarity.functionality.personalDetails')}
+        </li>
+        <li>
+          {t('page.privacySection.clarity.functionality.microsoftServices')}
         </li>
       </ul>
       <p>
-        To do this, Clarity may record how you interact with the site, kind of
-        like a video of your visit, and collects basic info about your device
-        and browser.
+        <Trans
+          i18nKey="page.privacySection.clarity.cookies"
+          components={{
+            microsoftprivacystatement: (
+              <Link
+                url="https://www.microsoft.com/privacy/privacystatement"
+                text="Microsoft Privacy Statement"
+              />
+            )
+          }}
+        />
       </p>
-      <p>
-        <b>Just so you know:</b>
-      </p>
-      <ul>
-        <li>
-          This helps me improve the website and make it more user-friendly.
-        </li>
-        <li>
-          Clarity doesn&apos;t collect personal details like your name or email.
-        </li>
-        <li>
-          Microsoft may also use some of this data to improve their own
-          services.
-        </li>
-      </ul>
-      <p>
-        Clarity uses cookies to remember if you&apos;ve been here before. These
-        cookies are set by Microsoft and might also track your activity on other
-        websites that use Clarity. For more information about how Microsoft
-        collects and uses your data, visit the{' '}
-        {
-          <Link
-            url="https://www.microsoft.com/privacy/privacystatement"
-            text="Microsoft Privacy Statement"
-          />
-        }
-        . I also use a functional cookie to remember your choice. This cookie
-        stores your answer so I don&apos;t bother you with my cookie banner on
-        every visit.
-      </p>
-      <p>
-        You are in complete control whether I or Microsoft can collect this data
-        or not. In order to do this simply move the toggle switch below to
-        allow/disallow tracking:
-      </p>
+      <p>{t('page.privacySection.clarity.consent.statement')}</p>
       <div className="d-flex gap-2 justify-content-center mt-4 form-check form-switch">
         <input
           className="form-check-input"
@@ -90,7 +86,9 @@ const PrivacySection = () => {
           onChange={toggleHandler}
         />
         <label className="form-check-label" htmlFor="consent-granted">
-          Tracking is {hasConsentBeenGranted ? 'enabled' : 'disabled'}
+          {t('page.privacySection.clarity.consent.toggle', {
+            trackingStatus: hasConsentBeenGranted ? 'enabled' : 'disabled'
+          })}
         </label>
       </div>
     </div>
