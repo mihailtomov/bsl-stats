@@ -10,9 +10,9 @@ export const config = {
     match: {
       wiki: 'starcraft',
       query:
-        'pageid, pagename, winner, section, date, match2bracketdata, match2opponents, match2games',
+        'match2id, winner, walkover, section, date, match2bracketdata, match2opponents, match2games',
       limit: 500,
-      order: 'date DESC',
+      order: 'date ASC',
     },
   },
   apiHeaders: {

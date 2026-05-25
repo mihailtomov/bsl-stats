@@ -12,6 +12,7 @@
 /api_response_examples
 local-dev-notes.md
 to-do-list.md
+/collapsible-table-mock.html
 
 # env variables
 /backend/.env

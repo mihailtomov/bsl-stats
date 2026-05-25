@@ -5,8 +5,11 @@ import https from 'node:https';
 
 import { config } from './config/config.ts';
 import { initializeCronJob } from './services/cron-job.ts';
+
 import { DataType, CacheSeconds } from './enums/index.ts';
 import middlewares from './middlewares/index.ts';
+import type { MatchDataResponse } from './types/index.ts';
+import { transformMatchDataResponse } from './utils/index.ts';
 
 const { apiUrl, apiParams, apiHeaders } = config;
 const { serverHeaders, redisClient, redisCache } = middlewares;
@@ -74,13 +77,14 @@ app.get('/matchlist/:pageid', redisCache, async (req, res) => {
       },
     );
 
-    const data = await response.json();
+    const data: MatchDataResponse = await response.json();
+    const transformedData = transformMatchDataResponse(data);
 
-    await redisClient.set(req.originalUrl, JSON.stringify(data), {
+    await redisClient.set(req.originalUrl, JSON.stringify(transformedData), {
       EX: CacheSeconds.OneDay,
     });
 
-    res.status(200).set({ 'Response-Source': 'api' }).json(data);
+    res.status(200).set({ 'Response-Source': 'api' }).json(transformedData);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Unexpected error occurred on the server.' });
