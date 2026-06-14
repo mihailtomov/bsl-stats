@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 
 import { fetchJsonData } from '../api/fetch';
-import { TournamentsList, TournamentsListResponse } from '../types/data';
+import type { TournamentsList, TournamentsListResponse } from '../types/data';
 import { extractProleagueTournaments } from '../utils/data';
 
 type CountryCodes = Record<string, string>;

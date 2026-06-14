@@ -3,10 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import { fetchJsonData } from '../api/fetch';
 import { DataContext } from '../store/data-context';
-import {
-  TournamentMatchListResponse,
-  TournamentStatistics
-} from '../types/data';
+import type { TournamentStatistics, TransformedMatchData } from '../types/data';
 import {
   getSortedTournamentStatisticsFromMatchListResponse,
   getTournamentPageId
@@ -29,12 +26,11 @@ const useTournamentStatisticsData = () => {
       tournamentsList,
       Number(tournamentNumber)
     );
-    const tournamentMatchListResponse: TournamentMatchListResponse =
-      await fetchJsonData(`/matchlist/${pageId as number}`);
+    const matchListData: TransformedMatchData[] = await fetchJsonData(
+      `/matchlist/${pageId as number}`
+    );
     const sortedTournamentStatistics =
-      getSortedTournamentStatisticsFromMatchListResponse(
-        tournamentMatchListResponse
-      );
+      getSortedTournamentStatisticsFromMatchListResponse(matchListData);
     setDataLoading(false);
     setTournamentStatisticsData(sortedTournamentStatistics);
   }, [tournamentNumber, tournamentsList]);

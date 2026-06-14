@@ -48,7 +48,7 @@ export interface MatchData {
   date: string;
   playerOne: PlayerData;
   playerTwo: PlayerData;
-  games: RawGameData[];
+  games: TransformedGame[];
 }
 
 interface PlayerData {
@@ -69,7 +69,7 @@ export interface TournamentStatistics {
 }
 
 export interface MatchResultData {
-  id: number;
+  id: string;
   firstPlayer: string;
   secondPlayer: string;
   winner: string;
@@ -79,4 +79,30 @@ export interface MatchResultData {
   stage: string;
   map: string;
   datePlayed: string;
+}
+
+// New data structure types
+export interface Participant {
+  playerId: number;
+  playerName: string;
+  score: number;
+  flag: string;
+  race: string;
+}
+
+export interface TransformedGame {
+  gameNumber: number;
+  map: string;
+  winnerId: number;
+  walkover: string;
+}
+
+export interface TransformedMatchData {
+  matchId: string;
+  winnerId: number;
+  walkover: string;
+  stage: string;
+  date: string;
+  participants: Participant[];
+  games: TransformedGame[];
 }

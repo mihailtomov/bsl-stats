@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { DataContext } from '../store/data-context';
-import { TournamentStatistics } from '../types/data';
+import type { TournamentStatistics } from '../types/data';
 
 interface Props {
   nickname: string;

@@ -14,12 +14,14 @@ export const transformMatchDataResponse = (
         flag: opponent.match2players[0].flag,
         race: opponent.match2players[0].extradata.faction,
       }));
-      const games = match.match2games.map((game) => ({
-        gameNumber: game.match2gameid,
-        map: game.map,
-        winnerId: Number(game.winner),
-        walkover: game.walkover,
-      }));
+      const games = match.match2games
+        .filter((game) => game.winner)
+        .map((game) => ({
+          gameNumber: game.match2gameid,
+          map: game.map,
+          winnerId: Number(game.winner),
+          walkover: game.walkover,
+        }));
 
       return {
         matchId: match.match2id,

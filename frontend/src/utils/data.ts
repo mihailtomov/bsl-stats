@@ -1,73 +1,21 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import type {
   MatchData,
   MatchResultData,
-  RawGameData,
-  RawPlayerData,
-  TournamentMatchListResponse,
+  Participant,
   TournamentsList,
   TournamentsListResponse,
-  TournamentStatistics } from '../types/data';
+  TournamentStatistics,
+  TransformedMatchData
+} from '../types/data';
 
-let identifier = 1;
-
-const extractPlayerData = ({
-  name,
-  flag,
-  extradata: { faction }
-}: RawPlayerData) => ({ name, flag, race: faction });
-
-const extractGameData = ({
-  map,
-  participants,
-  winner,
-  walkover,
-  date
-}: RawGameData) => ({
-  map,
-  participants,
-  winner,
-  walkover,
-  date
-});
-
-const getMatchResults = (games: RawGameData[], stage: string) => {
-  const matchResults = games
-    .reverse()
-    .map(({ map, participants, winner: winnerId, date }) => {
-      const { player: firstPlayer, faction: firstPlayerRace } =
-        participants['1_1'];
-      const { player: secondPlayer, faction: secondPlayerRace } =
-        participants['2_1'];
-      let winner, loser, winnerRace, loserRace;
-
-      if (Number(winnerId) === 1) {
-        winner = firstPlayer;
-        loser = secondPlayer;
-        winnerRace = firstPlayerRace.toUpperCase();
-        loserRace = secondPlayerRace.toUpperCase();
-      } else {
-        winner = secondPlayer;
-        loser = firstPlayer;
-        winnerRace = secondPlayerRace.toUpperCase();
-        loserRace = firstPlayerRace.toUpperCase();
-      }
-
-      return {
-        id: identifier++,
-        firstPlayer,
-        secondPlayer,
-        winner,
-        loser,
-        winnerRace,
-        loserRace,
-        stage,
-        map,
-        datePlayed: date
-      };
-    });
-
-  return matchResults as MatchResultData[];
-};
+const extractParticipantData = ({
+  playerId,
+  playerName,
+  race,
+  flag
+}: Participant) => ({ id: playerId, name: playerName, race, flag });
 
 const formatRecord = (record: { won: number; lost: number }) => {
   return Object.values(record).join(' - ');
@@ -88,29 +36,20 @@ export const extractProleagueTournaments = (data: TournamentsListResponse) => {
 };
 
 /** Extract the match data of the queried tournament fetched via the /v3/match endpoint. */
-export const extractMatchData = (data: TournamentMatchListResponse) => {
-  let stage, date, playerOne, playerTwo, games;
-
-  const matchData = data.result
-    .filter((match) => match.winner)
+export const extractMatchData = (data: TransformedMatchData[]) => {
+  const matchData = data
+    .filter((match) => match.winnerId > 0)
     .map((match) => {
-      const inheritedheaderWithData =
-        match.match2bracketdata?.inheritedheader?.includes('(Bo')
-          ? match.match2bracketdata?.inheritedheader
-          : '';
-      stage =
-        inheritedheaderWithData ||
-        match.match2bracketdata?.sectionheader ||
-        match?.section;
-      date = match.date;
-      const [playerOneData, playerTwoData] = match.match2opponents;
-      playerOne = extractPlayerData(playerOneData.match2players[0]);
-      playerTwo = extractPlayerData(playerTwoData.match2players[0]);
-      games = match.match2games
-        .map((gameData) => extractGameData(gameData))
-        .filter((gameData) => gameData.winner.length === 1);
+      const playerOne = extractParticipantData(match.participants[0]);
+      const playerTwo = extractParticipantData(match.participants[1]);
 
-      return { stage, date, playerOne, playerTwo, games };
+      return {
+        stage: match.stage,
+        date: match.date,
+        playerOne,
+        playerTwo,
+        games: match.games
+      };
     });
 
   return matchData as MatchData[];
@@ -121,6 +60,7 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
   const tournamentStatistics = matchData.reduce((result, currentEntry) => {
     const {
       playerOne: {
+        id: firstPlayerId,
         name: firstPlayerName,
         race: firstPlayerRace,
         flag: firstPlayerFlag
@@ -133,7 +73,6 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
         flag: secondPlayerFlag
       }
     } = currentEntry;
-    const { games, stage } = currentEntry;
 
     if (!result.some(({ nickname }) => nickname === firstPlayerName)) {
       result.push({
@@ -188,7 +127,23 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
       (data) => data.nickname === secondPlayerName
     ) as TournamentStatistics;
 
-    const matchResults = getMatchResults(games, stage);
+    const { games, stage, date } = currentEntry;
+    const matchResults = games.map((game) => ({
+      id: uuidv4(),
+      firstPlayer: firstPlayerName,
+      secondPlayer: secondPlayerName,
+      winner:
+        firstPlayerId === game.winnerId ? firstPlayerName : secondPlayerName,
+      loser:
+        firstPlayerId !== game.winnerId ? firstPlayerName : secondPlayerName,
+      winnerRace:
+        firstPlayerId === game.winnerId ? firstPlayerRace : secondPlayerRace,
+      loserRace:
+        firstPlayerId !== game.winnerId ? firstPlayerRace : secondPlayerRace,
+      stage,
+      map: game.map,
+      datePlayed: date
+    }));
 
     firstPlayerData.gamesWon += matchResults.filter(
       (result) => result.winner === firstPlayerName
@@ -214,7 +169,7 @@ export const getTournamentStatistics = (matchData: MatchData[]) => {
 
 /** Get the tournament matchlist response data in the form of tournament statistics sorted by winrate. */
 export const getSortedTournamentStatisticsFromMatchListResponse = (
-  tournamentMatchListResponse: TournamentMatchListResponse
+  tournamentMatchListResponse: TransformedMatchData[]
 ) => {
   const tournamentStatistics = getTournamentStatistics(
     extractMatchData(tournamentMatchListResponse)

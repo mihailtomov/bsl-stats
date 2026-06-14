@@ -3,9 +3,16 @@
   "description": "A web client that pulls data from the LPDB api and presents tournament stats from the BSL Proleague series.",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "proxy": "http://localhost:5002",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
   "dependencies": {
-    "@types/node": "^16.11.51",
+    "@types/node": "^18.19.130",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "clsx": "^2.1.1",
@@ -14,34 +21,18 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^15.4.1",
     "react-router-dom": "^6.7.0",
-    "react-scripts": "5.0.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@vitejs/plugin-react": "^4.4.1",
     "eslint": "^9.39.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "prettier": "^3.8.1",
-    "typescript": "^4.9.5",
-    "typescript-eslint": "^8.55.0"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.55.0",
+    "vite": "^6.3.5"
   }
 }

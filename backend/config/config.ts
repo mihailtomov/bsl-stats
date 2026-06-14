@@ -12,7 +12,7 @@ export const config = {
       query:
         'match2id, winner, walkover, section, date, match2bracketdata, match2opponents, match2games',
       limit: 500,
-      order: 'date ASC',
+      order: 'date DESC',
     },
   },
   apiHeaders: {
